@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.Exception.ProjectNotFoundException;
+import com.example.client.UserServiceClient;
 import com.example.dto.*;
 import com.example.entity.Projects;
 import com.example.entity.TeamMembers;
@@ -8,6 +9,8 @@ import com.example.entity.Teams;
 import com.example.repository.ProjectsRepository;
 import com.example.repository.TeamMembersRepository;
 import com.example.repository.TeamsRepository;
+import com.example.vo.UserIdList;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class DashboardService {
+    private final UserServiceClient userServiceClient;
     private final ProjectsRepository projectsRepository;
     private final TeamsRepository teamsRepository;
 
@@ -261,4 +265,15 @@ public class DashboardService {
         teamsRepository.delete(team);
     }
 
+    public TeamMembersInfo getTeamMembers(Long teamId){
+        List<Long> teamMemberIds = teamMembersRepository.findUserIdByTeamId(teamId);
+
+        try{
+            List<UserDto> teamMembers = userServiceClient.getUsersInfo(new UserIdList(teamMemberIds));
+            return new TeamMembersInfo(teamMembers);
+        } catch(FeignException ex){
+            log.error(ex.getMessage());
+            return new TeamMembersInfo(new ArrayList<>());
+        }
+    }
 }

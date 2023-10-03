@@ -1,0 +1,43 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: dashboard-service
+  profiles:
+    include: oauth
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: test
+    password: test
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cowork-database.cewhqtoznphg.ap-northeast-2.rds.amazonaws.com/cowork?autoReconnect=true&setTimezone=Asia/Seoul
+    username: cowork
+    password: cowork1!
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7777/eureka
+
+logging:
+  level:
+    com.example.userservice.client: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, busrefresh
