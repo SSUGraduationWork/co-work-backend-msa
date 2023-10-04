@@ -179,7 +179,7 @@ const workDao = {
 
     selectTeamWorks : async(connection, teamId) => {
         const selectTeamWorksQuery = `
-            SELECT work_id AS id, team_id AS teamId, work_name AS workName, end_date AS endDate, importance, status, worker_number AS workerNumber 
+            SELECT work_id AS workId, work_name AS workName
             FROM Works 
             WHERE team_id = ?;
         `
