@@ -1,16 +1,18 @@
 package com.example.demo.src.file.Service;
 
 
+import com.example.demo.src.file.Repository.AlarmRepository;
 import com.example.demo.src.file.Repository.BoardRepository;
 import com.example.demo.src.file.Repository.FeedbackRepository;
 import com.example.demo.src.file.Repository.FeedbackStatusRepository;
 import com.example.demo.src.file.client.*;
+import com.example.demo.src.file.domain.Alarms;
 import com.example.demo.src.file.domain.Boards;
 import com.example.demo.src.file.domain.FeedbackStatuses;
 import com.example.demo.src.file.domain.Feedbacks;
 import com.example.demo.src.file.dto.request.FeedbackRequest;
 import com.example.demo.src.file.dto.response.FeedbackResponse;
-import com.example.demo.src.file.vo.AlarmDTO;
+
 import com.example.demo.src.file.vo.MemberResponse;
 import com.example.demo.src.file.vo.TeamMemberResponse;
 import com.example.demo.src.file.vo.WorkResponse;
@@ -33,9 +35,7 @@ public class FeedbackService {
     private FeedbackRepository feedbackRepository;
     private BoardRepository boardRepository;
     private FeedbackStatusRepository feedbackStatusRepository;
-
-    @Autowired
-    AlarmServiceClient alarmServiceClient;
+    private AlarmRepository alarmRepository;
     @Autowired
     WorkerServiceClient workerServiceClient;
 
@@ -75,8 +75,8 @@ public class FeedbackService {
         //한번 피드백을 했으면 다시 못바꿈)
 
 
-        workResponse.setStatus(3);
-        workerServiceClient.updateWork(workResponse);
+        //workResponse.setStatus(3);
+        workerServiceClient.updateWork(3);
 
         // works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
         //마감기한 전에 피드백 했을 때만 점수 받을 수 있음
@@ -124,15 +124,15 @@ public class FeedbackService {
             }
 
 
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setWriterPictureUrl(writers.getPictureUrl());
-            alarmDTO.setUserId(member.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("requestFeedback");
-            alarmDTO.setBoardId(boards.getId());
-            alarmDTO.setWriterId(writers.getId());
-            alarmServiceClient.createAlarm(alarmDTO);
+            Alarms alarms = new Alarms();
+            alarms.setUserId(member.getId()); // 연관관계 설정, board의 작성자로 저장
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setWriterPictureUrl(writers.getPictureUrl());
+            alarms.setAlarmKind("requestFeedback");
+            alarms.setBoardId(boards.getId());
+            alarms.setWriterId(writers.getId());
+            alarmRepository.save(alarms);
         }
     }
 
@@ -203,8 +203,7 @@ public class FeedbackService {
             if (hasFeedbackYnTrue && workResponse.getStatus() != 4) {
 
 
-                workResponse.setStatus(4);
-                workerServiceClient.updateWork(workResponse);
+                workerServiceClient.updateWork(4);
 
                 //모든 work가 완료되었을때 알람을 보내도록 할지?
                 //정하기
@@ -228,14 +227,13 @@ public class FeedbackService {
 
         for (MemberResponse member : allMembers) {
 
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setUserId(member.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("complFeedback");
-            alarmDTO.setBoardId(boards.getId());
-
-            alarmServiceClient.createAlarm(alarmDTO);
+            Alarms alarms = new Alarms();
+            alarms.setUserId(member.getId());// 연관관계 설정, board의 작성자로 저장
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setAlarmKind("complFeedback");
+            alarms.setBoardId(boards.getId());
+            alarmRepository.save(alarms);
         }
 
     }
@@ -284,15 +282,16 @@ public class FeedbackService {
         String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'작성자님의 수정에 대해 거절을 하였습니다.";
         String url = "/board/view/" + boards.getId();
         for (MemberResponse member : allMembers) {
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setUserId(member.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("denyFeedback");
-            alarmDTO.setBoardId(boards.getId());
-            alarmDTO.setWriterPictureUrl(writers.getPictureUrl());
-            alarmDTO.setWriterId(writers.getId());
-            alarmServiceClient.createAlarm(alarmDTO);
+
+            Alarms alarms = new Alarms();
+            alarms.setUserId(member.getId()); // 연관관계 설정, board의 작성자로 저장->모든 멤버들한테 가도록
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setAlarmKind("denyFeedback");
+            alarms.setBoardId(boards.getId());
+            alarms.setWriterPictureUrl(writers.getPictureUrl());
+            alarms.setWriterId(writers.getId());
+            alarmRepository.save(alarms);
         }
 
     }
@@ -310,15 +309,17 @@ public class FeedbackService {
         String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'작성자님의 수정에 대해 수락하였습니다.";
         String url = "/board/view/" + boards.getId();
         for (MemberResponse member : allMembers) {
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setUserId(member.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("agreeFeedback");
-            alarmDTO.setBoardId(boards.getId());
-            alarmDTO.setWriterPictureUrl(writers.getPictureUrl());
-            alarmDTO.setWriterId(writers.getId());
-            alarmServiceClient.createAlarm(alarmDTO);
+
+
+            Alarms alarms = new Alarms();
+            alarms.setUserId(member.getId()); // 연관관계 설정, board의 작성자로 저장
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setAlarmKind("agreeFeedback");
+            alarms.setBoardId(boards.getId());
+            alarms.setWriterPictureUrl(writers.getPictureUrl());
+            alarms.setWriterId(writers.getId());
+            alarmRepository.save(alarms);
 
         }
     }

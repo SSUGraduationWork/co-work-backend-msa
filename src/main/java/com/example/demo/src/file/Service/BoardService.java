@@ -1,10 +1,12 @@
 package com.example.demo.src.file.Service;
 
 
+import com.example.demo.src.file.Repository.AlarmRepository;
 import com.example.demo.src.file.Repository.BoardRepository;
 import com.example.demo.src.file.Repository.FeedbackStatusRepository;
 import com.example.demo.src.file.Repository.FileRepository;
 import com.example.demo.src.file.client.*;
+import com.example.demo.src.file.domain.Alarms;
 import com.example.demo.src.file.domain.Boards;
 import com.example.demo.src.file.domain.FeedbackStatuses;
 import com.example.demo.src.file.domain.Files;
@@ -12,7 +14,7 @@ import com.example.demo.src.file.dto.request.BoardWriteRequest;
 import com.example.demo.src.file.dto.response.BoardDetailResponse;
 import com.example.demo.src.file.dto.response.BoardResponse;
 import com.example.demo.src.file.dto.response.multiWriteResponse;
-import com.example.demo.src.file.vo.AlarmDTO;
+
 import com.example.demo.src.file.vo.MemberResponse;
 import com.example.demo.src.file.vo.WorkResponse;
 import com.example.demo.src.file.vo.WorkerResponse;
@@ -39,8 +41,7 @@ public class BoardService {
     private FeedbackStatusRepository feedbackStatusRepository;
     private FileRepository fileRepository;
     private FileService fileService;
-    @Autowired
-    AlarmServiceClient alarmServiceClient;
+    private AlarmRepository alarmRepository;
     @Autowired
     WorkerServiceClient workerServiceClient;
 
@@ -237,17 +238,17 @@ public class BoardService {
                 message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "' 수정하였습니다.";
 
             }
-            String url = "/board/view/" + boards.getId();
 
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setWriterPictureUrl(writers.getPictureUrl());
-            alarmDTO.setUserId(memberResponse.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("complUpdate");
-            alarmDTO.setBoardId(boards.getId());
-            alarmDTO.setWriterId(writers.getId());
-            alarmServiceClient.createAlarm(alarmDTO);
+            String url = "/board/view/" + boards.getId();
+            Alarms alarms = new Alarms();
+            alarms.setUserId(memberResponse.getId()); // 연관관계 설정
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setWriterPictureUrl(writers.getPictureUrl());
+            alarms.setAlarmKind("complUpdate");
+            //  alarms.confirmBoard(boards);
+            alarms.setWriterId(writers.getId());
+            alarmRepository.save(alarms);
         }
     }
 
@@ -273,8 +274,7 @@ public class BoardService {
         // 알람 생성 및 설정을 수행하고 컬렉션에 추가
 
         // Alarms를 일괄 저장
-        for (int i = 0; i < allMembers.size(); i++) {
-            MemberResponse member=allMembers.get(i);
+        List<Alarms> alarmsList = allMembers.stream().map(member -> {
             String userName = writers.getUserName();
             Integer studentNumber = writers.getStudentNumber();
             String workName = works.getWorkName();
@@ -282,16 +282,19 @@ public class BoardService {
             String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'에 대해 새로운 글을 등록 하였습니다.";
             String url = "/board/view/" + boards.getId();
 
-            AlarmDTO alarmDTO = new AlarmDTO();
-            alarmDTO.setWriterPictureUrl(writers.getPictureUrl());
-            alarmDTO.setUserId(member.getId());
-            alarmDTO.setContent(message);
-            alarmDTO.setRedirectUrl(url);
-            alarmDTO.setAlarmKind("newWrite");
-            alarmDTO.setBoardId(boards.getId());
-            alarmDTO.setWriterId(writers.getId());
-            alarmServiceClient.createAlarm(alarmDTO);
-        }
+            Alarms alarms = new Alarms();
+            alarms.setWriterPictureUrl(writers.getPictureUrl());
+            alarms.setUserId(member.getId());
+            alarms.setContent(message);
+            alarms.setRedirectUrl(url);
+            alarms.setAlarmKind("newWrite");
+            alarms.setBoardId(boards.getId());
+            alarms.setWriterId(writers.getId());
+            return alarms;
+        }).collect(Collectors.toList());
+
+        // Alarms를 일괄 저장
+        alarmRepository.saveAll(alarmsList);
 
     }
 

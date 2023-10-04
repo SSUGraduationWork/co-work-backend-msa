@@ -33,6 +33,6 @@ public interface WorkerServiceClient {
     WorkResponse findWorkById(@PathVariable Long workId);
 
     @PostMapping("/work-service/work/set")
-    void updateWork(@RequestBody  WorkResponse workResponse);
+    void updateWork(@RequestBody  Integer integer);
 
 }
