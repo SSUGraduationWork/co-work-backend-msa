@@ -245,4 +245,11 @@ public class DashboardController {
         return ResponseEntity.status(HttpStatus.OK).body(teamMembers);
     }
 
+    //12. team info by teamId
+    @GetMapping("/team-info/{teamId}")
+    public ResponseEntity<TeamInfoRes> getTeamInfo(@PathVariable("teamId") Long teamId){
+        TeamInfoRes teamInfo = dashboardService.getTeamInfo(teamId);
+        return ResponseEntity.status(HttpStatus.OK).body(teamInfo);
+    }
+
 }

@@ -12,7 +12,6 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor
 @ToString
 @Getter
-@Setter
 @Table(name = "Team_members")
 public class TeamMembers {
     @Id

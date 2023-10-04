@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -272,5 +274,15 @@ public class DashboardService {
             log.error(ex.getMessage());
             return new TeamMembersInfo(new ArrayList<>());
         }
+    }
+
+    public TeamInfoRes getTeamInfo(Long teamId){
+        Optional<Teams> team = teamsRepository.findById(teamId);
+        if(team.isPresent()) {
+            Optional<Projects> project = projectsRepository.findById(team.get().getProjectId());
+            Projects projectInfo = project.orElseThrow(() -> new NoSuchElementException());
+            return new TeamInfoRes(projectInfo.getProjectName(), team.get().getTeamName());
+        }
+        return null;
     }
 }
