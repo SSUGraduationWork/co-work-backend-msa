@@ -13,12 +13,14 @@ import com.example.demo.src.file.domain.Files;
 import com.example.demo.src.file.dto.request.BoardWriteRequest;
 import com.example.demo.src.file.dto.response.BoardDetailResponse;
 import com.example.demo.src.file.dto.response.BoardResponse;
+import com.example.demo.src.file.dto.response.PostsResponse;
 import com.example.demo.src.file.dto.response.multiWriteResponse;
 
 import com.example.demo.src.file.vo.MemberResponse;
 import com.example.demo.src.file.vo.WorkResponse;
 import com.example.demo.src.file.vo.WorkerResponse;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -305,7 +307,16 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-
+    public List<PostsResponse> getPosts(Long workId){
+        List<Boards> boards = boardRepository.findByWorksId(workId);
+        List<PostsResponse> posts = new ArrayList<>();
+        ModelMapper modelMapper = new ModelMapper();
+        boards.forEach(v -> {
+            System.out.println(v);
+            posts.add(modelMapper.map(v, PostsResponse.class));
+        });
+        return posts;
+    }
 
 
 }

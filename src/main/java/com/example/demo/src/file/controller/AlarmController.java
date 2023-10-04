@@ -15,7 +15,6 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(origins="http://localhost:8081")
 public class AlarmController {
 
     private final AlarmService alarmService;

@@ -25,8 +25,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-//@CrossOrigin(origins="http://localhost:8081")
-@RequestMapping("/board-service")
+@RequestMapping("/")
 public class FeedbackController {
 
     private final FeedbackService feedbackService;

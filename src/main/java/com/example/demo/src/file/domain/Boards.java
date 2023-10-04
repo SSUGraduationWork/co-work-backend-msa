@@ -44,12 +44,8 @@ public class Boards extends BaseTimeEntity {
     private String content;
 
 
-
     @Column(name = "view_cnt")
     private Long viewCnt;     //조회수
-
-    @Column(name = "del_yn")
-    private boolean delYn;
 
     @Column(name = "feedback_yn")
     private boolean feedbackYn;
@@ -97,7 +93,6 @@ public class Boards extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.viewCnt = 0L;
-        this.delYn=false;
         this.feedbackYn=false;
     }
 }

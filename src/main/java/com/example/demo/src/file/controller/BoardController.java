@@ -9,11 +9,14 @@ import com.example.demo.src.file.common.Response;
 import com.example.demo.src.file.dto.request.BoardWriteRequest;
 import com.example.demo.src.file.dto.response.BoardDetailResponse;
 import com.example.demo.src.file.dto.response.BoardResponse;
+import com.example.demo.src.file.dto.response.PostsResponse;
 import com.example.demo.src.file.dto.response.multiWriteResponse;
 import com.example.demo.src.file.vo.MemberResponse;
 import com.example.demo.src.file.vo.WorkResponse;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.Path;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(origins="http://localhost:8081")
-@RequestMapping("/board-service")
+@RequestMapping("/")
 public class BoardController {
 
     private final BoardService boardService;
@@ -92,10 +94,13 @@ public class BoardController {
         return ResponseEntity.ok(Response.of(CommonCode.GOOD_REQUEST, boardService.multiReWrite(boardId,workId,request, files )));
     }
 
+    //workI에 해당하는 모든 게시글 반환
+    @GetMapping("/board/posts/{workId}")
+    public ResponseEntity<List<PostsResponse>> getPostsByWorkId(@PathVariable("workId") Long workId){
+        List<PostsResponse> postsByWorkId = boardService.getPosts(workId);
 
-
-
-
+        return ResponseEntity.status(HttpStatus.OK).body(postsByWorkId);
+    }
 }
 
 

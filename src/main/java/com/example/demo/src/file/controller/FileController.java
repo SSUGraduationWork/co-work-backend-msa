@@ -25,8 +25,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(origins="http://localhost:8081")
-@RequestMapping("/board-service")
+@RequestMapping("/")
 public class FileController {
 
     private final FileService fileService;
