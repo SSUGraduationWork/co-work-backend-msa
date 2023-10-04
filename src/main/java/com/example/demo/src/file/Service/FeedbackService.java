@@ -76,7 +76,7 @@ public class FeedbackService {
 
 
         //workResponse.setStatus(3);
-        workerServiceClient.updateWork(3);
+        workerServiceClient.setWorkStatus(workResponse.getId(), 3);
 
         // works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
         //마감기한 전에 피드백 했을 때만 점수 받을 수 있음
@@ -203,7 +203,7 @@ public class FeedbackService {
             if (hasFeedbackYnTrue && workResponse.getStatus() != 4) {
 
 
-                workerServiceClient.updateWork(4);
+                workerServiceClient.setWorkStatus(workResponse.getId(), 4);
 
                 //모든 work가 완료되었을때 알람을 보내도록 할지?
                 //정하기

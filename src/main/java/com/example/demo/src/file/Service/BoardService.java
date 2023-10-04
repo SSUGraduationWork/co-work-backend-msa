@@ -69,18 +69,18 @@ public class BoardService {
         //memberId와 workId로 worker조회하기. 글을 쓰는 사람이 work를 담당한 worker인지 확인하기 위함
 
         //feign client 사용
-        WorkerResponse workerResponse=workerServiceClient.findByUsersIdAndWorksId(memberId,workId);
+        WorkerResponse workerResponse=workerServiceClient.getWriteStatus(memberId,workId);
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
 
         //work의 담당자만 게시판을 작성할 수 있음
         //각각의 담당자마다 게시판을 한번만 작성할 수 있음
-        /*if (workerResponse.isWriteYn()) {
+        if (workerResponse.isWriteYn()) {
             throw new IllegalStateException("Worker has already written a board.");
-        }*/
+        }
 
             //woker가 게시판을 작성했음을 등록
             //feign client 사용
-            workerServiceClient.setTrue(memberId,workId);
+            workerServiceClient.setWriteStatusTrue(memberId,workId);
             // 게시판 등록
 
 
