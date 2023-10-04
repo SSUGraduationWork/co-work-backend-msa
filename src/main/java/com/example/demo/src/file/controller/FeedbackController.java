@@ -13,7 +13,8 @@ import com.example.demo.src.file.dto.response.BoardFeedbackResponse;
 import com.example.demo.src.file.dto.response.FeedbackResponse;
 import com.example.demo.src.file.dto.response.FeedbackStatusFeedbackYnUserIdResponse;
 import com.example.demo.src.file.dto.response.FeedbackStatusTeamMember;
-import com.example.demo.src.file.vo.MemberResponse;
+
+import com.example.demo.src.file.vo.ResponseTeamMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,7 +67,7 @@ public class FeedbackController {
     //    Members members=feedbackService.getUsers(memberId);
 
         List<FeedbackStatusFeedbackYnUserIdResponse> feedbackStatusesList = feedbackStatusRepository.findFeedbackYnAndUserIdByBoardsId(boardId);
-        List<MemberResponse> memberResponses=boardService.teamMemberList(teamId);
+        List<ResponseTeamMember> memberResponses=boardService.teamMemberList(teamId);
         List<BoardFeedbackResponse> feedbacksList = feedbackRepository.findFeedbackByBoardsId(boardId);
 
         return  ResponseEntity.ok(CommentResponse.of(CommonCode.GOOD_REQUEST, feedbacksList,feedbackStatusesList,memberResponses));

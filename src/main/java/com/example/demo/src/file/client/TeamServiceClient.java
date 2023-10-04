@@ -1,7 +1,7 @@
 package com.example.demo.src.file.client;
 
-import com.example.demo.src.file.common.Response;
-import com.example.demo.src.file.vo.MemberResponse;
+
+import com.example.demo.src.file.vo.ResponseTeamMember;
 import com.example.demo.src.file.vo.TeamMemberResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ import java.util.List;
 @FeignClient(name="team-service" )
 public interface TeamServiceClient {
 
-    @GetMapping("/team-service/find/member/{teamId}")
-    List<MemberResponse> findTeamById(@PathVariable Long teamId);
+    @GetMapping("/teammember/members/{teamId}")
+    List<ResponseTeamMember> findTeamById(@PathVariable Long teamId);
 
-    @GetMapping("/team-service/find/teammember/{teamId}/{memberId}")
+    @GetMapping("/teammember/member/{teamId}/{memberId}")
     TeamMemberResponse findByTeamsIdAndUsersId(@PathVariable Long teamId,@PathVariable Long memberId);
 
-    @PostMapping("/team-service/add/contribution")
+    @PostMapping("/teammember/add-contribution")
     void addContribution(@RequestBody TeamMemberResponse teamMemberResponse);
 }

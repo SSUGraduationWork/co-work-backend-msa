@@ -11,8 +11,7 @@ import com.example.demo.src.file.dto.response.BoardDetailResponse;
 import com.example.demo.src.file.dto.response.BoardResponse;
 import com.example.demo.src.file.dto.response.PostsResponse;
 import com.example.demo.src.file.dto.response.multiWriteResponse;
-import com.example.demo.src.file.vo.MemberResponse;
-import com.example.demo.src.file.vo.WorkResponse;
+import com.example.demo.src.file.vo.*;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Path;
 import lombok.AllArgsConstructor;
@@ -58,8 +57,8 @@ public class BoardController {
 
         List<BoardResponse> boardResponses = boardService.boardList(memberId, teamId);
 
-        List<WorkResponse> workResponses=boardService.workList(teamId);
-        List<MemberResponse> memberResponses=boardService.teamMemberList(teamId);
+        List<BoardWorkDto> workResponses=boardService.workList(teamId);
+        List<ResponseTeamMember> memberResponses=boardService.teamMemberList(teamId);
 
         return ResponseEntity.ok(BoardListResponse.of(CommonCode.GOOD_REQUEST, boardResponses,workResponses,memberResponses));
     }

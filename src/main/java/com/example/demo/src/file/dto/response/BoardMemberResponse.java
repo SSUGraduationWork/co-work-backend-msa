@@ -1,7 +1,8 @@
 package com.example.demo.src.file.dto.response;
 
 
-import com.example.demo.src.file.vo.MemberResponse;
+
+import com.example.demo.src.file.vo.ResponseTeamMember;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,10 +23,10 @@ public class BoardMemberResponse {
         this.studentNumber=studentNumber;
     }
 
-    public static BoardMemberResponse  from(MemberResponse memberResponse) {
+    public static BoardMemberResponse  from(ResponseTeamMember memberResponse) {
         return BoardMemberResponse .builder()
                 .userId(memberResponse.getId())
-                .writerName(memberResponse.getUserName())
+                .writerName(memberResponse.getName())
                 .pictureUrl(memberResponse.getPictureUrl())
                 .studentNumber(memberResponse.getStudentNumber())
                 .build();

@@ -1,5 +1,6 @@
 package com.example.demo.src.file.client;
 
+import com.example.demo.src.file.vo.BoardWorkDto;
 import com.example.demo.src.file.vo.WorkResponse;
 import com.example.demo.src.file.vo.WorkerResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -23,7 +24,7 @@ public interface WorkerServiceClient {
                                            @PathVariable("workId") Long workId);
 
     @GetMapping("/work-list/{teamId}")
-    List<WorkResponse> findWorksByTeamId(@PathVariable("teamId") Long teamId);
+    List<BoardWorkDto> findWorksByTeamId(@PathVariable("teamId") Long teamId);
 
     @GetMapping("/work/{workId}")
     WorkResponse findWorkById(@PathVariable Long workId);

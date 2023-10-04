@@ -1,7 +1,7 @@
 package com.example.demo.src.file.dto.response;
 
 import com.example.demo.src.file.domain.Feedbacks;
-import com.example.demo.src.file.vo.MemberResponse;
+
 import lombok.Builder;
 import lombok.Data;
 

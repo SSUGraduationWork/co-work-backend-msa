@@ -3,7 +3,8 @@ package com.example.demo.src.file.dto.response;
 
 import com.example.demo.src.file.domain.Boards;
 import com.example.demo.src.file.domain.Feedbacks;
-import com.example.demo.src.file.vo.MemberResponse;
+
+import com.example.demo.src.file.vo.ResponseTeamMember;
 import lombok.Builder;
 import lombok.Data;
 
@@ -46,14 +47,14 @@ public class FeedbackResponse {
         this.pictureUrl=pictureUrl;
     }
 
-    public static FeedbackResponse from(Feedbacks feedbacks, Boards boards, MemberResponse memberResponse) {
+    public static FeedbackResponse from(Feedbacks feedbacks, Boards boards, ResponseTeamMember memberResponse) {
         return FeedbackResponse.builder()
                 .feedbackId(feedbacks.getId())
                 .boardId(boards.getId())
                 .comment(feedbacks.getComment())
                 .createdAt(feedbacks.getCreatedAt())
                 .studentNumber(memberResponse.getStudentNumber())
-                .userName(memberResponse.getUserName())
+                .userName(memberResponse.getName())
                 .pictureUrl(memberResponse.getPictureUrl())
                 .build();
     }

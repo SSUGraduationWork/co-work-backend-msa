@@ -16,9 +16,7 @@ import com.example.demo.src.file.dto.response.BoardResponse;
 import com.example.demo.src.file.dto.response.PostsResponse;
 import com.example.demo.src.file.dto.response.multiWriteResponse;
 
-import com.example.demo.src.file.vo.MemberResponse;
-import com.example.demo.src.file.vo.WorkResponse;
-import com.example.demo.src.file.vo.WorkerResponse;
+import com.example.demo.src.file.vo.*;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,11 +148,11 @@ public class BoardService {
         return boardResponses;
     }
 
-    public List<WorkResponse> workList(Long teamId) {
+    public List<BoardWorkDto> workList(Long teamId) {
         return workerServiceClient.findWorksByTeamId(teamId);
     }
 
-    public List<MemberResponse> teamMemberList(Long teamId) {
+    public List<ResponseTeamMember> teamMemberList(Long teamId) {
         return teamServiceClient.findTeamById(teamId);
     }
 
@@ -162,8 +160,8 @@ public class BoardService {
     public BoardDetailResponse boardView(Long id){
         Boards boards = boardRepository.findBoardById(id);
         WorkResponse workResponse=workerServiceClient.findWorkById(boards.getWorkId());
-        MemberResponse memberResponse=memberServiceClient.findByUserId(boards.getUserId());
-        return BoardDetailResponse.from(boards,memberResponse,workResponse);
+        ResponseTeamMember memberDto=memberServiceClient.findByUserId(boards.getUserId());
+        return BoardDetailResponse.from(boards,memberDto,workResponse);
     }
 
     //___________________________________________________________
@@ -213,19 +211,19 @@ public class BoardService {
 
     public void reWrtieCompletionAlarm(Boards boards){
         // 해당 팀에 속한 모든 멤버 가져와서 FeedbackStatuses에 추가
-        List<MemberResponse> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
+        List<ResponseTeamMember> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
         List<FeedbackStatuses> feedbackStatusesList=feedbackStatusRepository.findByBoardsId(boards.getId());
-        MemberResponse writers=memberServiceClient.findByUserId(boards.getUserId());
+        ResponseTeamMember writers=memberServiceClient.findByUserId(boards.getUserId());
         WorkResponse workResponse=workerServiceClient.findWorkById(boards.getWorkId());
         for (int i = 0; i < allMembers.size(); i++) {
-            MemberResponse memberResponse=allMembers.get(i);
+            ResponseTeamMember memberResponse=allMembers.get(i);
             FeedbackStatuses feedbackStatuses=feedbackStatusesList.get(i);
             if (memberResponse == null || memberResponse.getId().equals(boards.getUserId())) {continue;}
 
                 //만약 글 작성자 본인이라면 피드백 승인,거부를 할 필요가 없으므로 feedbackStatus 등록 필요 없음.
                 //알림 기능, 글 등록 시 모든 팀의 모든 팀원들에게 알람이 감
 
-            String userName = memberResponse.getUserName(); //글 작성자 이름
+            String userName = memberResponse.getName(); //글 작성자 이름
             Integer studentNumber = writers.getStudentNumber(); //학번
             String workName =workResponse.getWorkName();
             String title = boards.getTitle();
@@ -256,9 +254,9 @@ public class BoardService {
 
     //wiriter은 게시판 작성자
     public void FeedbackStatusAndAlarm(Boards boards, Long writerId, Long workId, Long teamId) {
-        MemberResponse selectedMember = null;
-        List<MemberResponse> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
-        MemberResponse writers=memberServiceClient.findByUserId(writerId);
+        ResponseTeamMember selectedMember = null;
+        List<ResponseTeamMember> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
+        ResponseTeamMember writers=memberServiceClient.findByUserId(writerId);
         WorkResponse works=workerServiceClient.findWorkById(workId);
         // FeedbackStatuses 및 Alarms 생성 및 설정을 수행하고 컬렉션에 추가
         List<FeedbackStatuses> feedbackStatusesList = allMembers.stream().map(member -> {
@@ -277,7 +275,7 @@ public class BoardService {
 
         // Alarms를 일괄 저장
         List<Alarms> alarmsList = allMembers.stream().map(member -> {
-            String userName = writers.getUserName();
+            String userName = writers.getName();
             Integer studentNumber = writers.getStudentNumber();
             String workName = works.getWorkName();
             String title = boards.getTitle();

@@ -2,7 +2,8 @@ package com.example.demo.src.file.dto.response;
 
 import com.example.demo.src.file.domain.Boards;
 import com.example.demo.src.file.domain.Files;
-import com.example.demo.src.file.vo.MemberResponse;
+
+import com.example.demo.src.file.vo.ResponseTeamMember;
 import com.example.demo.src.file.vo.WorkResponse;
 import lombok.Builder;
 import lombok.Data;
@@ -53,7 +54,7 @@ public class BoardDetailResponse {
     }
 
 
-    public static BoardDetailResponse from(Boards boards, MemberResponse memberResponse, WorkResponse workResponse) {
+    public static BoardDetailResponse from(Boards boards, ResponseTeamMember memberResponse, WorkResponse workResponse) {
         BoardDetailResponseBuilder responseBuilder = BoardDetailResponse.builder()
                 .boardId(boards.getId())
                 .title(boards.getTitle())
@@ -63,7 +64,7 @@ public class BoardDetailResponse {
                 .workId(boards.getWorkId())
                 .createdAt(boards.getCreatedAt())
                 .workName(workResponse.getWorkName())
-                .writer(memberResponse.getUserName())
+                .writer(memberResponse.getName())
                 .pictureURL(memberResponse.getPictureUrl())
                 .studentNumber(memberResponse.getStudentNumber());
         List<String> fileDirs = new ArrayList<>();
