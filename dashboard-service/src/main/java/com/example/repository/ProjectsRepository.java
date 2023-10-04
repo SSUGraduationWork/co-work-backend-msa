@@ -2,9 +2,11 @@ package com.example.repository;
 
 import com.example.entity.Projects;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+@Repository
 public interface ProjectsRepository extends CrudRepository<Projects, Long> {
 
     ArrayList<Projects> findAll();

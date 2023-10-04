@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Contribution {
     private Long id;
-    private Long contribution;
+    private float contribution;
 }
