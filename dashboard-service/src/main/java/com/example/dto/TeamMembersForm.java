@@ -22,11 +22,6 @@ public class TeamMembersForm {
 
     @JsonProperty("contribution")
     private float contribution;
-//    public TeamMembers2 toEntity(Long teamId, Long userId) {
-//        TeamMembers2 entity = new TeamMembers2();
-//        entity.setTeamId(teamId);
-//        entity.setUserId(userId);
-//        return entity;
-//    }
+
 
 }

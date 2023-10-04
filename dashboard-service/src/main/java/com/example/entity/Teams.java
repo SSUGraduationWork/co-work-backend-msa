@@ -33,6 +33,14 @@ public class Teams {
         this.teamNumber = teamNumber;
     }
 
+    public void updateTeamNumber(Long teamNumber) {
+        this.teamNumber = teamNumber;
+    }
+
+    public void updateTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
     public TeamsForm toDto(Teams entity) {
         TeamsForm dto = new TeamsForm();
         dto.setTeamId(entity.getTeamId());
@@ -42,12 +50,4 @@ public class Teams {
         return dto;
     }
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "project_id")
-//    private Projects2 projects;
-//
-//
-//    public void setProjects(Projects2 projects) {
-//        this.projects = projects;
-//    }
 }

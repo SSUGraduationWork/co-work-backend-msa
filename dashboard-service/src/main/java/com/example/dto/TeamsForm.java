@@ -22,13 +22,4 @@ public class TeamsForm {
     @JsonProperty("teamNumber")
     private Long teamNumber;
 
-
-    public Teams toEntity(TeamsForm dto) {
-        Teams entity = new Teams();
-        entity.setTeamId(dto.getTeamId());
-        entity.setProjectId(dto.getProjectId());
-        entity.setTeamName(dto.getTeamName());
-        entity.setTeamNumber(dto.getTeamNumber());
-        return entity;
-    }
 }

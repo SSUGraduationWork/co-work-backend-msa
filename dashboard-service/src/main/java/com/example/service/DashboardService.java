@@ -57,19 +57,16 @@ public class DashboardService {
 
     @Transactional
     public List<Projects> watchProjects(Long professor_id) {
-        List<Projects> projects2List = projectsRepository.findByProfessorId(professor_id);
-        return projects2List;
+        List<Projects> projectsList = projectsRepository.findByProfessorId(professor_id);
+        return projectsList;
     }
 
     @Transactional
     public ProjectsForm editProjects(Long projectId, RequestProjectsForm dto) {
         Projects project = projectsRepository.findById(projectId).orElse(null);
+        System.out.println("project: "+project);
         if (project != null) {
-            if (dto.getProjectName() != null) {
-                project.setProjectName(dto.getProjectName());
-            } else if (dto.getSemester() != null) {
-                project.setSemester(dto.getSemester());
-            }
+            project.update(dto.getProjectName(), dto.getSemester());
         } else {
             throw new ProjectNotFoundException("Project Not Found");
         }
@@ -132,13 +129,13 @@ public class DashboardService {
     @Transactional
     public void countProjectNums(Long projectId) {
         Projects projects = projectsRepository.findById(projectId).orElse(null);
-        projects.setProjectNumber(projects.getProjectNumber() + 1);
+        projects.updateProjectNumber(projects.getProjectNumber() + 1);
     }
 
     @Transactional
     public TeamsForm countTeamNums(Long teamId) {
         Teams teams = teamsRepository.findByTeamId(teamId);
-        teams.setTeamNumber(teams.getTeamNumber() + 1);
+        teams.updateTeamNumber(teams.getTeamNumber() + 1);
 
         TeamsForm form = teams.toDto(teams);
         return form;
@@ -252,7 +249,7 @@ public class DashboardService {
         Teams team = teamsRepository.findByTeamId(teamId);
 
         if (dto.getTeamName() != null) {
-            team.setTeamName(dto.getTeamName());
+            team.updateTeamName(dto.getTeamName());
         }
 
         return team;

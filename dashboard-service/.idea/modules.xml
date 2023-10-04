@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.dashboard-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.dashboard-service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.example.dashboard-service.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/com.example.dashboard-service.main~1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dashboard-service.iml" filepath="$PROJECT_DIR$/.idea/modules/dashboard-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dashboard-service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/dashboard-service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dashboard-service.test.iml" filepath="$PROJECT_DIR$/.idea/modules/dashboard-service.test.iml" />

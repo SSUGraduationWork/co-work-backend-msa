@@ -36,6 +36,15 @@ public class Projects {
         this.projectNumber = projectNumber;
     }
 
+    public void update(String projectName, String semester) {
+        this.projectName = projectName;
+        this.semester = semester;
+    }
+
+    public void updateProjectNumber(Long projectNumber) {
+        this.projectNumber = projectNumber;
+    }
+
     public ProjectsForm toDto(Projects entity) {
         ProjectsForm dto = new ProjectsForm();
         dto.setProjectId(entity.getProjectId());
