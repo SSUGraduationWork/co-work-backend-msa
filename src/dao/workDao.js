@@ -57,15 +57,15 @@ const workDao = {
         return insertWorkInfoRow;
     },
 
-    insertWorkers : async(connection, workId, worker_arr) => {
+    insertWorkers : async(connection, workId, teamId, worker_arr) => {
         const insertWorkersQuery = `
-            INSERT INTO Workers(work_id, user_id)
-            VALUES (?,?);
+            INSERT INTO Workers(work_id, user_id, team_id)
+            VALUES (?,?,?);
         `;
 
         try{
             for (const userId of worker_arr) {
-                await connection.query(insertWorkersQuery, [workId, userId]);
+                await connection.query(insertWorkersQuery, [workId, userId, teamId]);
             }
             return true
         } catch(err) {

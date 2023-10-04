@@ -102,14 +102,14 @@ exports.putWork = async function (req, res) {
  */
 
 exports.patchWork = async(req, res) => {
-    const {workId, updateValue} = req.params
+    const {teamId, workId, updateValue} = req.params
     
     const val = req.body[updateValue];  
     console.log(`update "${updateValue}" to ${val}`);
     if (val == undefined) return res.send(errResponse(baseResponse.NOT_MATCH));
     if (updateValue == "worker"){
         const worker_number = val.length;
-        const patchWorkerResult = await workService.patchWorker(workId, worker_number, val);
+        const patchWorkerResult = await workService.patchWorker(workId, teamId, worker_number, val);
         return res.send(patchWorkerResult);
         
     } else{

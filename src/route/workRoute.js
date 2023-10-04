@@ -17,7 +17,7 @@ module.exports = (app) => {
     app.put('/works/:workId', work.putWork);
 
     //6. 특정 작업 하나 수정 API
-    app.patch('/works/:workId/:updateValue', work.patchWork);
+    app.patch('/works/:teamId/:workId/:updateValue', work.patchWork);
 
     //7. 팀 작업 현황 조회 API
     app.get('/work-progress/:teamId', work.getWorkProgress);

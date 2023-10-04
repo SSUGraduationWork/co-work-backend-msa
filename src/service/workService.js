@@ -60,13 +60,13 @@ const workService = {
         }
     },
 
-    patchWorker : async (workId, worker_number, worker_arr) => {
+    patchWorker : async (workId, teamId, worker_number, worker_arr) => {
         try{
             const connection = await pool.getConnection(async(conn) => (conn));
             
             //유저 삭제 후 새로 등록, worker_number update
             const deletedWorkers = await workDao. deleteWorkers(connection, workId);
-            const patchWorkers = await workDao.insertWorkers(connection, workId, worker_arr);
+            const patchWorkers = await workDao.insertWorkers(connection, workId, teamId, worker_arr);
             const patchWorkerNumber = await workDao.patchWorkerNumber(connection, workId, worker_number);
             
             connection.release();
