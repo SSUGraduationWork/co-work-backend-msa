@@ -8,6 +8,6 @@ public class ContributionRes {
     private Integer studentNumber;
     private String name;
     private String pictureUrl;
-    private Long contribution;
+    private Float contribution;
 
 }

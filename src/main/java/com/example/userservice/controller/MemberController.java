@@ -13,6 +13,7 @@ import com.example.userservice.vo.UserIdList;
 import com.thoughtworks.xstream.core.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,12 @@ import java.util.List;
 public class MemberController {
     private final OAuthService oauthService;
     private final MemberService memberService;
+    private final Environment env;
 
     @GetMapping("/health_check")
     public String healthCheck(){
 
-        return "hello";
+        return env.getProperty("google.uri");
     }
     /* list에 있는 userId에 해당하는 user 정보 모두 반환 */
     @PostMapping("/users")
