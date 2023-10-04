@@ -8,4 +8,5 @@ import lombok.Data;
 public class RequestContribution {
     private Long id;
     private Float contribution;
+
 }

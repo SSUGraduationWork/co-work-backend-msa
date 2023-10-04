@@ -9,5 +9,4 @@ public class ContributionRes {
     private String name;
     private String pictureUrl;
     private Float contribution;
-
 }

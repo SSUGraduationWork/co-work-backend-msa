@@ -54,7 +54,6 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
 	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 }
-
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"

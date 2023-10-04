@@ -3,7 +3,9 @@ package com.example.userservice.service;
 import com.example.userservice.dto.ContributionRes;
 import com.example.userservice.dto.MemberDto;
 import com.example.userservice.dto.PostMemberRes;
+
 import com.example.userservice.dto.UserInfoRes;
+
 import com.example.userservice.entity.Member;
 import com.example.userservice.repository.MemberRepository;
 import com.example.userservice.utils.JwtService;
@@ -24,6 +26,12 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtService jwtService;
+
+    public ResponseTeamMember findByUserId(Long userId){
+        Optional<Member> member= memberRepository.findById(userId);
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(member.get(), ResponseTeamMember.class);
+    }
 
     public List<ResponseTeamMember> getTeamMembers (List<Long> userIdList){
         List<ResponseTeamMember> teamMembers = new ArrayList<>();
@@ -98,4 +106,5 @@ public class MemberService {
         }
         return null;
     }
+
 }

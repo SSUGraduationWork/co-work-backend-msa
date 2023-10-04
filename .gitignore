@@ -4,6 +4,11 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+<<<<<<< HEAD
+=======
+application.yml
+application-oauth.properties
+>>>>>>> user-service-guyujung
 
 ### STS ###
 .apt_generated

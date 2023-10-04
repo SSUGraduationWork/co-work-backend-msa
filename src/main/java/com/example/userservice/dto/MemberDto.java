@@ -12,6 +12,7 @@ public class MemberDto {
     private String user_name;
     private String role;
     private Integer student_number;
+
     private String university;
     private String department;
     private String picture_url;
