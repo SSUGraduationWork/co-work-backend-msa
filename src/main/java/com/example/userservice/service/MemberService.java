@@ -3,6 +3,7 @@ package com.example.userservice.service;
 import com.example.userservice.dto.ContributionRes;
 import com.example.userservice.dto.MemberDto;
 import com.example.userservice.dto.PostMemberRes;
+import com.example.userservice.dto.UserInfoRes;
 import com.example.userservice.entity.Member;
 import com.example.userservice.repository.MemberRepository;
 import com.example.userservice.utils.JwtService;
@@ -86,5 +87,15 @@ public class MemberService {
         String jwtToken = jwtService.createJwt(id, role);
         PostMemberRes postMemberRes = new PostMemberRes(jwtToken, id, role);
         return postMemberRes;
+    }
+
+    public UserInfoRes findUser(Long userId){
+        Optional<Member> member = memberRepository.findById(userId);
+
+        if(member.isPresent()){
+            ModelMapper modelmapper = new ModelMapper();
+            return modelmapper.map(member.get(), UserInfoRes.class);
+        }
+        return null;
     }
 }

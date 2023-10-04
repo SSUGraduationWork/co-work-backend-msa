@@ -1,15 +1,13 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.ContributionRes;
+import com.example.userservice.dto.*;
 import com.example.userservice.service.MemberService;
 import com.example.userservice.service.OAuthService;
 import com.example.userservice.config.Constant.SocialLoginType;
-import com.example.userservice.dto.GetSocialOAuthRes;
-import com.example.userservice.dto.MemberDto;
-import com.example.userservice.dto.PostMemberRes;
 import com.example.userservice.vo.RequestContribution;
 import com.example.userservice.vo.ResponseTeamMember;
 import com.example.userservice.vo.UserIdList;
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import com.thoughtworks.xstream.core.BaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +91,12 @@ public class MemberController {
         } else {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
+    }
+
+    @GetMapping("/user-info/{userId}")
+    public ResponseEntity<UserInfoRes> getHeaderInfo(@PathVariable("userId")Long userId){
+        UserInfoRes member = memberService.findUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(member);
     }
 
 }
