@@ -1,0 +1,75 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: test
+    password: test
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@github.com:SSUGraduationWork/spring-cloud-config.git
+          ignore-local-ssh-settings: true
+          privateKey: |
+            -----BEGIN RSA PRIVATE KEY-----
+            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
+            -----END RSA PRIVATE KEY-----
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, busrefresh
