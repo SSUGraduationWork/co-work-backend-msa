@@ -15,7 +15,6 @@ public class WorkResponse {
     private Integer importance;
     private Integer status;
     private Integer workerNumber;
-    private boolean delYn;
     private LocalDateTime endDate;
 
     @Builder

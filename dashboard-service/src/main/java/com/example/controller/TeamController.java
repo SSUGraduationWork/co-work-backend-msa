@@ -12,24 +12,23 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(origins="http://localhost:8081")
-@RequestMapping("/team-service")
+@RequestMapping("/")
 public class TeamController {
 
 
     private final TeamMemberService teamMemberService;
     //멤버별로 알람 리스트 확인하기
 
-    @GetMapping("/find/member/{teamId}")
+    @GetMapping("/teammember/members/{teamId}")
     public List<UserDto> findTeamById(@PathVariable Long teamId) {
         return teamMemberService.findTeamById(teamId);
     }
-    @GetMapping("/find/teammember/{teamId}/{memberId}")
+    @GetMapping("/teammember/member/{teamId}/{memberId}")
     public ResponseEntity<TeamMemberResponse> findByTeamsIdAndUsersId(@PathVariable Long teamId, @PathVariable Long memberId) {
         return ResponseEntity.ok( teamMemberService.findByTeamsIdAndUsersId(teamId,memberId));
     }
 
-    @PostMapping("/add/contribution")
+    @PostMapping("/teammember/add-contribution")
     public void addContribution(@RequestBody  TeamMemberResponse teamMemberResponse){
         teamMemberService.addContribution(teamMemberResponse);
     }
