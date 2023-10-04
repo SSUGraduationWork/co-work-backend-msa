@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name="team-service" )
+@FeignClient(name="dashboard-service" )
 public interface TeamServiceClient {
 
     @GetMapping("/teammember/members/{teamId}")
