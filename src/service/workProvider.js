@@ -1,6 +1,7 @@
 const {pool} = require("../../config/database");
 const workDao = require("../dao/workDao");
 const teamMemberClient = require("../client/teamMemberClient");
+const boardClient = require("../client/boardClient");
 
 // Provider: Read 비즈니스 로직 처리
 
@@ -19,9 +20,13 @@ const workProvider = {
     retrieveWork : async (workId) => {
         const connection = await pool.getConnection(async (conn) => conn);
         const workResult = await workDao.selectWorkById(connection, workId);
-        const boardsResult = await workDao.selectBoardsAboutWork(connection, workId);
-        const result = {...workResult[0], ...boardsResult}
         connection.release();
+
+        const boards = await boardClient.getPostsByWorkId(workId);
+        
+
+        const result = {...workResult[0], boards};
+    
         return result;
     },
 

@@ -45,9 +45,9 @@ exports.getWorkById = async (req, res) => {
     try {
         const workId = req.params.workId;
         const workById = await workProvider.retrieveWork(workId);
-        return res.send(response(baseResponse.SUCCESS, workById));
+        return res.status(200).send(response(baseResponse.SUCCESS, workById));
     } catch(err){
-        console.log(err);
+        console.error(err);
         return res.send(errResponse(baseResponse.SERVER_ERROR));
     }
 };
