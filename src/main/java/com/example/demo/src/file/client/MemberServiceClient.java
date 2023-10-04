@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name="user-service" )
 public interface MemberServiceClient {
 
-    @GetMapping("/user-service/find/userId/{userId}")
+    @GetMapping("/user/{userId}")
     ResponseTeamMember findByUserId(@PathVariable Long userId);
 
 }
