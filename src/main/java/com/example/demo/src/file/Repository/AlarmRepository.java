@@ -19,7 +19,6 @@ public interface AlarmRepository extends JpaRepository<Alarms, Long> {
             "WHERE a.userId = :memberId")
     List<Object[]> findAlarmsWithFeedbackYn(@Param("memberId") Long memberId);
 
-    @Transactional
     @Modifying
     @Query("UPDATE Alarms a SET a.seen = true WHERE a.alarmId = :alarmId")
     void updateSeenStatus(@Param("alarmId") Long alarmId);

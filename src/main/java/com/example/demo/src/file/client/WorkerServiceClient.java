@@ -23,7 +23,7 @@ public interface WorkerServiceClient {
     void setWriteStatusTrue(@PathVariable("userId") Long userId,
                                            @PathVariable("workId") Long workId);
 
-    @GetMapping("/work-list/{teamId}")
+    @GetMapping("/works-list/{teamId}")
     List<BoardWorkDto> findWorksByTeamId(@PathVariable("teamId") Long teamId);
 
     @GetMapping("/work/{workId}")

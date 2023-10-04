@@ -59,11 +59,10 @@ public class FeedbackController {
     //피드백 보기
     //front에서 피드백을 쓰자마자 바로 보여주기 위해서 addComment라는 변수에 담아서 화면에 보여줬음.
     //feedback의 거절 승인은 한번하여 번복이 없음. feedback 승인,여부가 필요함
-    @GetMapping("/comment/{boardId}/{memberId}/{teamId}")
+    @GetMapping("/comment/{boardId}/{teamId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CommentResponse<List<?>>>  commentFeedbackView(@PathVariable("boardId") Long boardId,
-                                                                         @PathVariable("memberId") Long memberId
-                                                                                    , @PathVariable("teamId") Long teamId){
+                                                                         @PathVariable("teamId") Long teamId){
     //    Members members=feedbackService.getUsers(memberId);
 
         List<FeedbackStatusFeedbackYnUserIdResponse> feedbackStatusesList = feedbackStatusRepository.findFeedbackYnAndUserIdByBoardsId(boardId);
