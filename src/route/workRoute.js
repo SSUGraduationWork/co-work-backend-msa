@@ -21,4 +21,23 @@ module.exports = (app) => {
 
     //7. 팀 작업 현황 조회 API
     app.get('/work-progress/:teamId', work.getWorkProgress);
+
+    //board-service에 필요
+    //8. 팀에서 특정 유저가 맡은 모든 작업 반환 API
+    app.get('/works/:teamId/:userId', work.getWorksByUser);
+
+    //9. 특정 작업에서 특정 담당자의 게시글 작성 유무(writeYN) 반환 API
+    app.get('/works/write-status/:userId/:workId', work.getWriteStatus);
+
+    //10. workId로 work 반환 API
+    app.get('/work/:workId', work.findWorkById);
+
+    //11. 작업 담당자의 게시글 작성 상태 true로 변경
+    app.post('/works/write-status/:userId/:workId', work.setWriteStatusTrue);
+
+    //12. 작업 상태 변경
+    app.post('/works/status/:workId/:status', work.setWorkStatus);
+
+    //13. 팀의 모든 작업 반환
+    app.get('/works-list/:teamId', work.findWorksByTeamId);
 };

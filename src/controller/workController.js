@@ -136,3 +136,105 @@ exports.getWorkProgress = async (req, res) => {
         return res.send(errResponse(baseResponse.SERVER_ERROR));
     }
 };
+
+/**
+ * API No. 8
+ * API Name : 팀에서 특정 유저가 맡은 모든 작업 반환 API
+ * [GET] /works/:teamId/:userId
+ */
+exports.getWorksByUser = async (req, res) => {
+    try{
+        const {teamId, userId} = req.params;
+
+        const result = await workProvider.retrieveWorksByUserId(teamId, userId);
+        return res.status(200).send(result);
+
+    } catch(err){
+        console.error(err);
+        return res.status(500);
+    }
+}
+
+/**
+ * API No. 9
+ * API Name : 특정 작업에서 특정 담당자의 게시글 작성 유무(writeYN) 반환 API
+ * [GET] /works/write-status/:userId/:workId
+ */
+exports.getWriteStatus = async (req, res) => {
+    try{
+        const {userId, workId} = req.params;
+        const writeYn = await workProvider.getWriteStatus(userId, workId);
+        return res.status(200).send(writeYn);
+    } catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}
+
+/**
+ * API No. 10
+ * API Name : workId로 work 반환 API
+ * [GET] /work/:workId
+ */
+exports.findWorkById = async (req, res) => {
+    try{
+        const {workId} = req.params;
+        const work = await workProvider.getWork(workId);
+        return res.status(200).send(work);
+
+    } catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}
+
+/**
+ * API No. 11
+ * API Name : 작업 담당자의 게시글 작성 상태 true로 변경
+ * [POST] /works/write-status/:userId/:workId
+ */
+exports.setWriteStatusTrue = async(req, res) => {
+    try{
+        const {userId, workId} = req.params;
+        const result = await workService.setWriteStatus(userId, workId);
+        return res.status(201).send(null);
+
+    }catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}
+
+/**
+ * API No. 12
+ * API Name : 작업 상태 변경
+ * [POST] /works/status/:workId/:status
+ */
+exports.setWorkStatus = async(req, res) => {
+    try{
+        const {workId, status} = req.params;
+        const result = await workService.setWorkStatus(workId, status);
+        return res.status(201).send(null);
+
+    } catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}
+
+/**
+ * API No. 13
+ * API Name : 팀의 모든 작업 반환
+ * [GET] /works-list/:teamId
+ */
+exports.findWorksByTeamId = async(req, res) => {
+    try{
+        const {teamId} = req.params;
+        const worksList = await workProvider.getTeamWorks(teamId);
+        return res.status(200).send(worksList);
+
+    }catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}

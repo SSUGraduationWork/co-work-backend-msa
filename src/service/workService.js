@@ -89,6 +89,18 @@ const workService = {
             console.log(err);
             return errResponse(baseResponse.DB_ERROR);
         }
+    },
+
+    setWriteStatus: async (userId, workId) => {
+        const connection = await pool.getConnection(async(conn) => conn);
+        const result = await workDao.patchWriteStatus(connection, userId, workId);
+        return result;
+    },
+
+    setWorkStatus : async (workId, status) => {
+        const connection = await pool.getConnection(async(conn) => conn);
+        const result = await workDao.updateWorkStatus(connection, workId, status);
+        return result;
     }
 }
 

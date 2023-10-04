@@ -2,7 +2,7 @@ const client = require('../../eureka-helper');
 const axios = require('axios');
 const serverName = 'dashboard-service';
 
-const userClient = {
+const teamMemberClient = {
     
     getTeamMembers : async (teamId) => {
         const dashboardInstance = client.getInstancesByAppId(serverName)[0];
@@ -20,4 +20,4 @@ const userClient = {
     }
 }
 
-module.exports = userClient;
+module.exports = teamMemberClient;

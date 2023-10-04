@@ -146,6 +146,61 @@ const workDao = {
         `
         const [workProgress] = await connection.query(selectWorkProgressQuery, teamId);
         return workProgress;
-    }
+    },
+
+    selectWorksByUser : async(connection, teamId, userId) => {
+        const selectWorksByUserQuery = `
+            SELECT W.work_id, work_name
+            FROM Works W
+            LEFT OUTER JOIN Workers P ON W.work_id = P.work_id 
+            WHERE P.user_id = ? AND P.team_id = ? AND P.write_yn = 0;
+        `
+        const [works] = await connection.query(selectWorksByUserQuery, [userId, teamId]);
+        return works;
+    },
+
+    selectWriteStatus : async(connection, userId, workId) => {
+        const selectWriteStatusQuery = `
+            SELECT write_yn AS writeYn FROM Workers WHERE user_id = ? AND work_id = ?;
+        `
+        const [writeYn] = await connection.query(selectWriteStatusQuery, [userId, workId]);
+        return writeYn;
+    },
+
+    selectWork : async(connection, workId) => {
+        const selectWorkQuery = `
+            SELECT work_id AS id, team_id AS teamId, work_name AS workName, end_date AS endDate, importance, status, worker_number AS workerNumber 
+            FROM Works 
+            WHERE work_id = ?;
+        `
+        const [work] = await connection.query(selectWorkQuery, workId);
+        return work;
+    },
+
+    selectTeamWorks : async(connection, teamId) => {
+        const selectTeamWorksQuery = `
+            SELECT work_id AS id, team_id AS teamId, work_name AS workName, end_date AS endDate, importance, status, worker_number AS workerNumber 
+            FROM Works 
+            WHERE team_id = ?;
+        `
+        const [worksList] = await connection.query(selectTeamWorksQuery, teamId);
+        return worksList;
+    },
+
+    patchWriteStatus : async(connection, userId, workId) => {
+        const updateWriteStatusQuery = `
+            UPDATE Workers SET write_yn = 1 WHERE user_id = ? AND work_id = ?;
+        `
+        const res = await connection.query(updateWriteStatusQuery, [userId, workId]);
+        return res;
+    },
+
+    updateWorkStatus : async (connection, workId, status) => {
+        const updateWorkStatusQuery = `
+            UPDATE Works SET status = ? WHERE work_id =?;
+        `
+        const res = await connection.query(updateWorkStatusQuery, [status, workId]);
+        return res
+    },
 }
 module.exports = workDao;
