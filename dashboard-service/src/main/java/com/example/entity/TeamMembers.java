@@ -27,13 +27,18 @@ public class TeamMembers {
     private Long userId;
 
     @Column(name = "contribution")
-    private Long contribution;
+    private float contribution;
 
 
     public void create(Long teamId, Long userId, long l) {
         this.teamId = teamId;
         this.userId = userId;
-        this.contribution = l;
+        this.contribution = 0;
+    }
+
+    public TeamMembers addContribution(float num){
+        this.contribution+=num;
+        return this;
     }
 
     public TeamMembersForm toDto(TeamMembers entity) {
