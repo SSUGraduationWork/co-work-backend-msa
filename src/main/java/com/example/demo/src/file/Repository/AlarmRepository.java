@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface AlarmRepository extends JpaRepository<Alarms, Long> {
     @Query("SELECT a, f.feedbackYn " +
             "FROM Alarms a " +

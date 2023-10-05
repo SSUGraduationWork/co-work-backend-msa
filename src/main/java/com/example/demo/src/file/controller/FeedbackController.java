@@ -38,6 +38,7 @@ public class FeedbackController {
     TeamServiceClient teamServiceClient;
     //피드백 글쓰기
     //isApproved=0인경우 피드백 거부, isApproved=1인경우 피드백 승인
+
     @PostMapping("/comment/{boardId}/{writerId}/{isApproved}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Response<FeedbackResponse>>  commentSave(@PathVariable("boardId") Long boardId,
@@ -64,10 +65,12 @@ public class FeedbackController {
     public ResponseEntity<CommentResponse<List<?>>>  commentFeedbackView(@PathVariable("boardId") Long boardId,
                                                                          @PathVariable("teamId") Long teamId){
     //    Members members=feedbackService.getUsers(memberId);
-
         List<FeedbackStatusFeedbackYnUserIdResponse> feedbackStatusesList = feedbackStatusRepository.findFeedbackYnAndUserIdByBoardsId(boardId);
+        System.out.println(feedbackStatusesList.get(0).getFeedbackYn());
         List<ResponseTeamMember> memberResponses=boardService.teamMemberList(teamId);
+        System.out.println(memberResponses.get(0).getName());
         List<BoardFeedbackResponse> feedbacksList = feedbackRepository.findFeedbackByBoardsId(boardId);
+        System.out.println("hello");
 
         return  ResponseEntity.ok(CommentResponse.of(CommonCode.GOOD_REQUEST, feedbacksList,feedbackStatusesList,memberResponses));
     }

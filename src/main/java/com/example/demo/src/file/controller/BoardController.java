@@ -17,6 +17,7 @@ import jakarta.ws.rs.Path;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,7 @@ public class BoardController {
 
 
     //파일 한번에 여러게 업로드 및 게시글 작성
+    @Transactional
     @PostMapping("/board/upcount/{boardId}")
     public void upcount( @PathVariable("boardId") Long boardId ) {
         //조회수 증가 로직
