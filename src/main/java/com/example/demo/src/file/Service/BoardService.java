@@ -78,43 +78,43 @@ public class BoardService {
             throw new IllegalStateException("Worker has already written a board.");
         }
 
-            //woker가 게시판을 작성했음을 등록
-            //feign client 사용
-            workerServiceClient.setWriteStatusTrue(memberId,workId);
-            // 게시판 등록
+        //woker가 게시판을 작성했음을 등록
+        //feign client 사용
+        workerServiceClient.setWriteStatusTrue(memberId,workId);
+        // 게시판 등록
 
 
-            Boards boards = toEntity(request);
-            boards.setUserId(memberId);
-            boards.setTeamId(teamId);
-            boards.setWorkId(workId);
+        Boards boards = toEntity(request);
+        boards.setUserId(memberId);
+        boards.setTeamId(teamId);
+        boards.setWorkId(workId);
 
-            boardRepository.save(boards);
+        boardRepository.save(boards);
 
-            // Save all uploaded files
-            if (files != null) {
-                for (MultipartFile file : files) {
-                    UUID uuid = UUID.randomUUID();
-                    String fileName = uuid + "_" + file.getOriginalFilename();
-                    File saveFile = new File(projectPath, fileName);
-                    file.transferTo(saveFile);
+        // Save all uploaded files
+        if (files != null) {
+            for (MultipartFile file : files) {
+                UUID uuid = UUID.randomUUID();
+                String fileName = uuid + "_" + file.getOriginalFilename();
+                File saveFile = new File(projectPath, fileName);
+                file.transferTo(saveFile);
 
 
-                    // 빌더를 사용하여 파일 객체 생성
-                    Files file1 = Files.builder()
-                            .filename(fileName)
-                            .filepath("/files/" + fileName)
-                            .build();
-                    file1.confirmBoard(boards);
-                    fileRepository.save(file1);
+                // 빌더를 사용하여 파일 객체 생성
+                Files file1 = Files.builder()
+                        .filename(fileName)
+                        .filepath("/files/" + fileName)
+                        .build();
+                file1.confirmBoard(boards);
+                fileRepository.save(file1);
 
-                }
             }
+        }
 
 
-            // 멤버수에 맞는 feedbackstatus 테이블 등록 및 글 생성 알람 메시지 저장
+        // 멤버수에 맞는 feedbackstatus 테이블 등록 및 글 생성 알람 메시지 저장
 
-            FeedbackStatusAndAlarm(boards,memberId,workId,teamId);
+        FeedbackStatusAndAlarm(boards,memberId,workId,teamId);
         return multiWriteResponse.from( boards);
 
     }
@@ -135,7 +135,8 @@ public class BoardService {
         List<Boards> boardsList = boardRepository.findBoardsByTeamId(teamId);
         List<FeedbackStatuses> feedbackStatusesList=feedbackStatusRepository.findFeedbackStatusesByMemberIdAndTeamId(memberId,teamId);
 
-
+        System.out.println("feedbackStatusesList.size()"+feedbackStatusesList.size());
+        System.out.println("boardsList.size()"+boardsList.size());
         List<BoardResponse> boardResponses = new ArrayList<>();
 
         for (int i = 0; i < boardsList.size(); i++) {
@@ -214,20 +215,24 @@ public class BoardService {
         List<ResponseTeamMember> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
         List<FeedbackStatuses> feedbackStatusesList=feedbackStatusRepository.findByBoardsId(boards.getId());
         ResponseTeamMember writers=memberServiceClient.findByUserId(boards.getUserId());
+
         WorkResponse workResponse=workerServiceClient.findWorkById(boards.getWorkId());
         for (int i = 0; i < allMembers.size(); i++) {
             ResponseTeamMember memberResponse=allMembers.get(i);
             FeedbackStatuses feedbackStatuses=feedbackStatusesList.get(i);
             if (memberResponse == null || memberResponse.getId().equals(boards.getUserId())) {continue;}
 
-                //만약 글 작성자 본인이라면 피드백 승인,거부를 할 필요가 없으므로 feedbackStatus 등록 필요 없음.
-                //알림 기능, 글 등록 시 모든 팀의 모든 팀원들에게 알람이 감
+            //만약 글 작성자 본인이라면 피드백 승인,거부를 할 필요가 없으므로 feedbackStatus 등록 필요 없음.
+            //알림 기능, 글 등록 시 모든 팀의 모든 팀원들에게 알람이 감
 
-            String userName = memberResponse.getName(); //글 작성자 이름
+
+            String userName = writers.getName(); //글 작성자 이름
             Integer studentNumber = writers.getStudentNumber(); //학번
             String workName =workResponse.getWorkName();
             String title = boards.getTitle();
             String message="";
+
+            System.out.println("userName"+writers );
             //거절한 사람에게 가는 알림 메시지
             if(feedbackStatuses.getFeedbackYn()==2){
                 message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "' 피드백을 반영하여 수정하였습니다.";
@@ -246,8 +251,8 @@ public class BoardService {
             alarms.setRedirectUrl(url);
             alarms.setWriterPictureUrl(writers.getPictureUrl());
             alarms.setAlarmKind("complUpdate");
-            //  alarms.confirmBoard(boards);
-            alarms.setWriterId(writers.getId());
+            alarms.setBoardId(boards.getId());
+            alarms.setWriterId(memberResponse.getId());
             alarmRepository.save(alarms);
         }
     }
@@ -274,24 +279,27 @@ public class BoardService {
         // 알람 생성 및 설정을 수행하고 컬렉션에 추가
 
         // Alarms를 일괄 저장
-        List<Alarms> alarmsList = allMembers.stream().map(member -> {
-            String userName = writers.getName();
-            Integer studentNumber = writers.getStudentNumber();
-            String workName = works.getWorkName();
-            String title = boards.getTitle();
-            String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'에 대해 새로운 글을 등록 하였습니다.";
-            String url = "/board/view/" + boards.getId();
+        List<Alarms> alarmsList = allMembers.stream()
+                .filter(member -> !member.getId().equals(writerId))
+                .map(member -> {
 
-            Alarms alarms = new Alarms();
-            alarms.setWriterPictureUrl(writers.getPictureUrl());
-            alarms.setUserId(member.getId());
-            alarms.setContent(message);
-            alarms.setRedirectUrl(url);
-            alarms.setAlarmKind("newWrite");
-            alarms.setBoardId(boards.getId());
-            alarms.setWriterId(writers.getId());
-            return alarms;
-        }).collect(Collectors.toList());
+                    String userName = writers.getName();
+                    Integer studentNumber = writers.getStudentNumber();
+                    String workName = works.getWorkName();
+                    String title = boards.getTitle();
+                    String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'에 대해 새로운 글을 등록 하였습니다.";
+                    String url = "/board/view/" + boards.getId();
+
+                    Alarms alarms = new Alarms();
+                    alarms.setWriterPictureUrl(writers.getPictureUrl());
+                    alarms.setUserId(member.getId());
+                    alarms.setContent(message);
+                    alarms.setRedirectUrl(url);
+                    alarms.setAlarmKind("newWrite");
+                    alarms.setBoardId(boards.getId());
+                    alarms.setWriterId(member.getId());
+                    return alarms;
+                }).collect(Collectors.toList());
 
         // Alarms를 일괄 저장
         alarmRepository.saveAll(alarmsList);

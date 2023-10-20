@@ -36,7 +36,7 @@ public class FileController {
 
 
 
-    //파일 객체로 삭제
+ /*   //파일 객체로 삭제
     @DeleteMapping("/files/Object/delete")
     public  ResponseEntity<Response<String>> deleteFilesByObject(@RequestBody List<Files> files) throws BaseException{
         try {
@@ -46,7 +46,7 @@ public class FileController {
             e.printStackTrace();
             throw new BaseException(BaseResponseStatus.SERVER_ERROR);
         }
-    }
+    }*/
 
 
     //파일 다운로드
@@ -66,6 +66,17 @@ public class FileController {
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + files.getFilename() + "\"")
                 .body(resource);
+    }
+
+    @DeleteMapping("/files/delete")
+    public ResponseEntity<Response<String>> deleteFiles(@RequestBody List<Long> fileIdList) throws BaseException{
+        try {
+            fileService.deleteFileSystem(fileIdList); // 서비스 메서드 호출
+            return ResponseEntity.ok(Response.of(CommonCode.GOOD_REQUEST, "파일 삭제 성공"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(BaseResponseStatus.SERVER_ERROR);
+        }
     }
 
 

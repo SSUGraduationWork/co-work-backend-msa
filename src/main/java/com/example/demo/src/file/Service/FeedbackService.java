@@ -281,8 +281,12 @@ public class FeedbackService {
         List<ResponseTeamMember> allMembers = teamServiceClient.findTeamById(boards.getTeamId());
         String message = "'" + studentNumber + " " + userName + "'님께서 '[" + workName + "]" + title + "'작성자님의 수정에 대해 거절을 하였습니다.";
         String url = "/board/view/" + boards.getId();
+        System.out.println("writers"+writers);
         for (ResponseTeamMember member : allMembers) {
 
+            if(member.getId().equals(writers.getId())){
+
+                continue;}
             Alarms alarms = new Alarms();
             alarms.setUserId(member.getId()); // 연관관계 설정, board의 작성자로 저장->모든 멤버들한테 가도록
             alarms.setContent(message);
@@ -310,7 +314,7 @@ public class FeedbackService {
         String url = "/board/view/" + boards.getId();
         for (ResponseTeamMember member : allMembers) {
 
-
+            if(member.getId().equals(writers.getId())){continue;}
             Alarms alarms = new Alarms();
             alarms.setUserId(member.getId()); // 연관관계 설정, board의 작성자로 저장
             alarms.setContent(message);
