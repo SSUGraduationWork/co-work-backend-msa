@@ -149,6 +149,26 @@ public class BoardService {
         return boardResponses;
     }
 
+
+    public List<BoardResponse> professorBoardList( Long teamId) {
+        // memberId를 사용하여 해당 멤버의 알람 리스트를 가져옴
+        // memberId와 teamId에 해당하는 게시글 리스트 조회
+        // teamId로 해당 팀의 게시글 리스트 조회
+        List<Boards> boardsList = boardRepository.findBoardsByTeamId(teamId);
+
+
+
+        System.out.println("boardsList.size()"+boardsList.size());
+        List<BoardResponse> boardResponses = new ArrayList<>();
+
+        for (int i = 0; i < boardsList.size(); i++) {
+            Boards board = boardsList.get(i);
+            BoardResponse boardResponse = BoardResponse.from(board);
+            boardResponses.add(boardResponse);
+        }
+        return boardResponses;
+    }
+
     public List<BoardWorkDto> workList(Long teamId) {
         return workerServiceClient.findWorksByTeamId(teamId);
     }
