@@ -65,6 +65,19 @@ public class BoardController {
         return ResponseEntity.ok(BoardListResponse.of(CommonCode.GOOD_REQUEST, boardResponses,workResponses,memberResponses));
     }
 
+    //게시글 리스트+페이징 추후 필요+정렬 필요
+    @GetMapping("/professor/board/list/{teamId}")
+    public ResponseEntity<BoardListResponse<?>> professorBoardList(
+            @PathVariable("teamId") Long teamId) {
+
+        List<BoardResponse> boardResponses = boardService. professorBoardList(teamId);
+
+        List<BoardWorkDto> workResponses=boardService.workList(teamId);
+        List<ResponseTeamMember> memberResponses=boardService.teamMemberList(teamId);
+
+        return ResponseEntity.ok(BoardListResponse.of(CommonCode.GOOD_REQUEST, boardResponses,workResponses,memberResponses));
+    }
+
 
     //특정 게시글 눌렀을 때 상세 페이지 생성
     @GetMapping("/board/view/{boardId}/{memberId}/{teamId}")
