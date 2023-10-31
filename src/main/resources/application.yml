@@ -1,7 +1,12 @@
 server:
-  port: 0
+  port: 5002
 
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   application:
     name: board-service
   jpa:
@@ -19,3 +24,12 @@ spring:
 logging:
   level:
     com.example.userservice.client: DEBUG
+
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
