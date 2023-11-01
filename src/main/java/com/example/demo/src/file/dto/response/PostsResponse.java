@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PostsResponse {
-    private Long board_id;
-    private Long user_id;
+    private Long id;
+    private Long userId;
     private String title;
 
     public PostsResponse(){
