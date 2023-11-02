@@ -70,7 +70,7 @@ public class BoardService {
 
         //feign client 사용
         WorkerResponse workerResponse=workerServiceClient.getWriteStatus(memberId,workId);
-        String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files";
+        String projectPath =  "/src/main/resources/static/files";
 
         //work의 담당자만 게시판을 작성할 수 있음
         //각각의 담당자마다 게시판을 한번만 작성할 수 있음
@@ -191,7 +191,7 @@ public class BoardService {
     //게시글을 수정하고 싶을 경우에도 생각해야함.
     //다중 파일 글 재작성
     public multiWriteResponse multiReWrite(Long boardId,Long workId,BoardWriteRequest request, MultipartFile[] files) throws Exception{
-        String projectPath=System.getProperty("user.dir")+ "/src/main/resources/static/files";
+        String projectPath="/src/main/resources/static/files";
 
         Boards boards = boardRepository.findBoardById(boardId);
 

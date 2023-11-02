@@ -26,8 +26,8 @@ public class FileService {
         try {
             for (Files file : files) {
                 String photoPath = file.getFilepath();
-                String projectPath = System.getProperty("user.dir");
-                File photoFile = new File(projectPath + "/src/main/resources/static/" + photoPath);
+              //  String projectPath = System.getProperty("user.dir");
+                File photoFile = new File("/src/main/resources/static/" + photoPath);
 
 
 
@@ -56,8 +56,8 @@ public class FileService {
             for(Long fileId: fileIdList){
                 Files file=fileRepository.findById(fileId).get();
                 String photoPath = file.getFilepath();
-                String projectPath = System.getProperty("user.dir");
-                File photoFile = new File(projectPath + "/src/main/resources/static/" + photoPath);
+             //   String projectPath = System.getProperty("user.dir");
+                File photoFile = new File( "/src/main/resources/static/" + photoPath);
 
                 fileRepository.deleteById(fileId);
 
