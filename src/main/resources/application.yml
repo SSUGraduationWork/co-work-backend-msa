@@ -32,7 +32,7 @@ logging:
 eureka:
   instance:
     #아래 두줄 추가
-    hostname: board-service-0.default.svc.cluster.local
+    hostname: board-service
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
