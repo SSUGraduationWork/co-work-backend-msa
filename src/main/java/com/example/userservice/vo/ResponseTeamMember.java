@@ -9,5 +9,4 @@ public class ResponseTeamMember {
     private Integer studentNumber;
     private String name;
     private String pictureUrl;
-
 }
