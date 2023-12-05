@@ -95,7 +95,7 @@ exports.putWork = async function (req, res) {
 
 /**
  * API No. 6
- * API Name : 작업명, 담당자, 마감일, 중요도, 상태 중 하나 수정 API
+ * API Name : 작업명, 담당자, 시작일, 마감일, 중요도, 상태 중 하나 수정 API
  * [PUT] /works/:workId/:updateValue
  * body : work_namre or end_date or importance or status or worker
  * 수정하려는 값: updateValue, 수정 내용 : val

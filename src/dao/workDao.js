@@ -2,8 +2,8 @@ const workDao = {
 
     selectWorks: async (connection, teamId) => {
         const selectWorksQuery = `
-        SELECT work_id, work_name, GROUP_CONCAT(user_id SEPARATOR ';') AS worker, end_date, importance, status
-        FROM (SELECT Works.work_id, work_name, end_date, importance, status, user_id
+        SELECT work_id, work_name, GROUP_CONCAT(user_id SEPARATOR ';') AS worker, start_date, end_date, importance, status
+        FROM (SELECT Works.work_id, work_name, start_date, end_date, importance, status, user_id
               FROM Works
                     LEFT JOIN Workers
                         ON Workers.work_id = Works.work_id
@@ -16,7 +16,7 @@ const workDao = {
 
     selectWorkById: async (connection, workId) => {
         const selectWorkByIdQuery =`
-            SELECT Works.work_id, work_name, GROUP_CONCAT(user_id SEPARATOR ';') AS worker, end_date, importance, status
+            SELECT Works.work_id, work_name, GROUP_CONCAT(user_id SEPARATOR ';') AS worker, start_date, end_date, importance, status
             FROM Works
                 LEFT JOIN Workers
                     ON Works.work_id = Workers.work_id
