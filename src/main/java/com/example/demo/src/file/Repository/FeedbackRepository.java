@@ -19,7 +19,7 @@ public interface FeedbackRepository extends JpaRepository<Feedbacks,Long>
     @Query("SELECT f FROM Feedbacks f WHERE f.boards.id = :boardId")
     List<Feedbacks> findByBoardsId(@Param("boardId") Long board);
 
-    @Query("SELECT NEW com.example.demo.src.file.dto.response.BoardFeedbackResponse(f.id,f.comment,f.createdAt,f.writerId)  FROM Feedbacks f WHERE f.boards.id = :boardId")
+    @Query("SELECT NEW com.example.demo.src.file.dto.response.BoardFeedbackResponse(f.id,f.comment,f.createdAt,f.writerId,f.modReq)  FROM Feedbacks f WHERE f.boards.id = :boardId")
     List<BoardFeedbackResponse> findFeedbackByBoardsId(@Param("boardId") Long board);
 
 

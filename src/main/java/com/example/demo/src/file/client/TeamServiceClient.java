@@ -18,7 +18,7 @@ public interface TeamServiceClient {
     @GetMapping("/teammember/members/{teamId}")
     List<ResponseTeamMember> findTeamById(@PathVariable Long teamId);
 
-    @GetMapping("/teammember/member/{teamId}/{memberId}")
+    @GetMapping("   /teammember/member/{teamId}/{memberId}")
     TeamMemberResponse findByTeamsIdAndUsersId(@PathVariable Long teamId,@PathVariable Long memberId);
 
     @PostMapping("/teammember/add-contribution")

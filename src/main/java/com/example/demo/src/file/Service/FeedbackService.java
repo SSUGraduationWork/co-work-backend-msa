@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -50,11 +51,13 @@ public class FeedbackService {
         Boards boards = boardRepository.findBoardById(boardId);
         ResponseTeamMember writers = memberServiceClient.findByUserId(memberId);//피드백 작성자
         WorkResponse workResponse=workerServiceClient.findWorkById(boards.getWorkId());
+        // FeedbackStatuses feedbackStatuses = feedbackStatusRepository.findByBoardsIdAndUsersId(boards.getId(), writers.getId());
+
         Feedbacks feedbacks = toEntity(requset);
         feedbacks.confirmBoard(boards);
         feedbacks.setWriterId(writers.getId());
-        feedbackRepository.save(feedbacks);
-        OneTeaamMemberAgreeCheck(isApproved, boards, writers,workResponse);
+
+        OneTeaamMemberAgreeCheck(feedbacks,isApproved, boards, writers,workResponse);
 
         // 팀원 모두 동의하면 boards의 feedback_yn=true로 변경
         AllTeamMemberAgreeCheck(boards,workResponse);
@@ -62,11 +65,16 @@ public class FeedbackService {
         return FeedbackResponse.from(feedbacks, boards,writers);
     }
 
-    public void OneTeaamMemberAgreeCheck(Integer isApproved, Boards boards, ResponseTeamMember writers,WorkResponse workResponse) {
+    public void OneTeaamMemberAgreeCheck(Feedbacks feedbacks,Integer isApproved, Boards boards, ResponseTeamMember writers,WorkResponse workResponse) {
+
+
         //-----------------------------
         FeedbackStatuses feedbackStatuses = feedbackStatusRepository.findByBoardsIdAndUsersId(boards.getId(), writers.getId());
         //한번도 피드백을 이미 한 경우 예외처리
-        if (feedbackStatuses.getFeedbackYn() != 0) {
+        if (feedbackStatuses.getFeedbackYn() != 0||feedbackStatuses.getFeedbackYn() == 3) {
+            //피드백을 이미 한 경우에는 피드백 메시지를 달았던 당시 피드백 상태로 보여주기 위함
+            feedbacks.setModReq(feedbackStatuses.getFeedbackYn());
+            feedbackRepository.save(feedbacks);
             return;
         }
         //피드백을 등록 하기만 하면
@@ -78,15 +86,19 @@ public class FeedbackService {
         //workResponse.setStatus(3);
         workerServiceClient.setWorkStatus(workResponse.getId(), 3);
 
-        // works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
+        /*// works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
         //마감기한 전에 피드백 했을 때만 점수 받을 수 있음
         //writer에게 기여도 +1증가, 게시판 작성자는 피드백 점수에서 제외
         LocalDateTime currentTime = LocalDateTime.now();
+        // 작업이 종료되지 않은 경우
+        long hoursDifference = ChronoUnit.HOURS.between(currentTime, workResponse.getEndDate());
         if (workResponse.getEndDate().isAfter(currentTime)) {
             TeamMemberResponse teamMembers = teamServiceClient.findByTeamsIdAndUsersId(boards.getTeamId(),writers.getId());
             teamMembers.setContribution(1);
             teamServiceClient.addContribution(teamMembers);
-        }
+        } else if (hoursDifference <= 24) {
+
+        }*/
 
 
         //피드백 작성자가 동의 하면 feedbackStauses의 feedback_yn=true로 변경
@@ -94,12 +106,17 @@ public class FeedbackService {
         if (isApproved == 1) {
             // 승인한 경우 feedbackYn=true로 바꾸기
             feedbackStatuses.feedbackAgree();
+            // 피드백을 처음 달았고 승인한 경우 modReq=true로 바꾸기
+            feedbacks.feedbackAgree();
         } else if ((isApproved == 2)) {
-            // 거부한 경우 feedbackYn=false로 바꾸기
+            // 피드백을 처음 달았고 거부한 경우 modReq=false로 바꾸기
             feedbackStatuses.feedbackDeny();
+            feedbacks.feedbackDeny();
             //피드백에서 수정 요청 시  수정 요청한 본인 제외 모든 팀의 모든 팀원들에게 알람이 감
             FeedbackStatusAndAlarm(boards, writers,workResponse);
+
         }
+        feedbackRepository.save(feedbacks);
         feedbackStatusRepository.save(feedbackStatuses);
     }
 
@@ -159,18 +176,25 @@ public class FeedbackService {
             if (hasFeedbackYnTrue && boards.isFeedbackYn() == false) {
 
 
-                LocalDateTime currentTime = LocalDateTime.now();
-                // works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
+                // 작성자가 마감일 전에 작성했으면 점수를 받을 수 있음
                 //마감기한 전에 피드백 했을 때만 점수 받을 수 있음
-                if (workResponse.getEndDate().isAfter(currentTime)) {
+                long hoursDifference = ChronoUnit.HOURS.between( workResponse.getEndDate(),boards.getCreatedAt());
+               // System.out.println("시간 차이"+hoursDifference);
+                if (workResponse.getEndDate().isAfter(boards.getCreatedAt())) {
+                //    System.out.println("마감일 이내");
                     TeamMemberResponse teamMembers = teamServiceClient.findByTeamsIdAndUsersId(boards.getTeamId(),boards.getUserId());
-                    float importance = (float) workResponse.getImportance();
-                    float workerNumber = (float) workResponse.getWorkerNumber();
-                    teamMembers.setContribution(importance / workerNumber);
+                    int importance =  workResponse.getImportance();
+                    teamMembers.setContribution(importance);
                     teamServiceClient.addContribution(teamMembers);
-
-
+                }else if (0<hoursDifference && hoursDifference <= 24) {// 작성자가 마감일 전에 작성했으면 점수를 절반만 받을 수 있음
+                //    System.out.println("24시간 이내");
+                    TeamMemberResponse teamMembers = teamServiceClient.findByTeamsIdAndUsersId(boards.getTeamId(),boards.getUserId());
+                    float importance =  workResponse.getImportance();
+                    teamMembers.setContribution(importance/2);
+                    teamServiceClient.addContribution(teamMembers);
                 }
+
+
                 boards.setFeedbackYn(true);
                 boardRepository.save(boards);
                 //팀원 모두에게 피드백 완료 알람 전송

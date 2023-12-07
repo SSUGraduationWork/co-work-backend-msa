@@ -108,7 +108,7 @@ public class BoardController {
         return ResponseEntity.ok(Response.of(CommonCode.GOOD_REQUEST, boardService.multiReWrite(boardId,workId,request, files )));
     }
 
-    //workI에 해당하는 모든 게시글 반환
+    //workId에 해당하는 모든 게시글 반환
     @GetMapping("/board/posts/{workId}")
     public ResponseEntity<List<PostsResponse>> getPostsByWorkId(@PathVariable("workId") Long workId){
         List<PostsResponse> postsByWorkId = boardService.getPosts(workId);

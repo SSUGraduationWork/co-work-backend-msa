@@ -18,30 +18,33 @@ public class BoardFeedbackResponse  {
 
     private LocalDateTime createdAt;
     private Long userId;
+
     /*
     private String userName;
 
     private String pictureUrl;
-
+*/
     private Integer modReq;
 
-     */
+
     public BoardFeedbackResponse() {
 
     }
 
-    public BoardFeedbackResponse(String comment) {
+    public BoardFeedbackResponse(String comment,Integer modReq) {
         this.comment = comment;
+        this.modReq=modReq;
     }
 
     @Builder
     public BoardFeedbackResponse (Long feedbackId, String comment,LocalDateTime createdAt,
-                             Long userId){
+                             Long userId,Integer modReq){
 
         this.feedbackId=feedbackId;
         this.comment=comment;
         this.createdAt=createdAt;
         this.userId=userId;
+        this.modReq=modReq;
     }
 
     public static BoardFeedbackResponse from(Feedbacks feedbacks) {
@@ -50,6 +53,7 @@ public class BoardFeedbackResponse  {
                 .comment(feedbacks.getComment())
                 .createdAt(feedbacks.getCreatedAt())
                 .userId(feedbacks.getWriterId())
+                .modReq(feedbacks.getModReq())
                 .build();
     }
 }

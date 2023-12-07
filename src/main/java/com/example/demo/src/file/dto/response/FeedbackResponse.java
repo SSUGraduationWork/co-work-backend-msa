@@ -26,7 +26,7 @@ public class FeedbackResponse {
 
     private String pictureUrl;
 
-    private boolean modReq;
+    private Integer modReq;
     public FeedbackResponse() {
 
     }
@@ -37,7 +37,7 @@ public class FeedbackResponse {
 
     @Builder
     public FeedbackResponse (Long feedbackId, Long boardId, String comment,LocalDateTime createdAt,
-                             Integer studentNumber,String userName,String pictureUrl, boolean feedbackStatus){
+                             Integer studentNumber,String userName,String pictureUrl,  Integer modReq){
         this.boardId = boardId;
         this.feedbackId=feedbackId;
         this.comment=comment;
@@ -45,6 +45,7 @@ public class FeedbackResponse {
         this.studentNumber=studentNumber;
         this.userName=userName;
         this.pictureUrl=pictureUrl;
+        this.modReq=modReq;
     }
 
     public static FeedbackResponse from(Feedbacks feedbacks, Boards boards, ResponseTeamMember memberResponse) {
@@ -53,6 +54,7 @@ public class FeedbackResponse {
                 .boardId(boards.getId())
                 .comment(feedbacks.getComment())
                 .createdAt(feedbacks.getCreatedAt())
+                .modReq(feedbacks.getModReq())
                 .studentNumber(memberResponse.getStudentNumber())
                 .userName(memberResponse.getName())
                 .pictureUrl(memberResponse.getPictureUrl())

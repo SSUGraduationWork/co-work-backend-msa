@@ -31,13 +31,13 @@ public class Feedbacks extends FeedbackTimeEntity {
     private Long writerId;
 
     @Column(name="mod_req")
-    private boolean modReq;
+    private Integer modReq;
 
     @Column(length = 500)
     private String comment;
 
 
-    private boolean agree;
+
 
     //연관관계 편의 메소드
     public void confirmBoard(Boards boards){
@@ -58,7 +58,16 @@ public class Feedbacks extends FeedbackTimeEntity {
         this.id=id;
         this.boards = boards;
         this.comment=comment;
-        this.modReq=false;
-        this.agree=false;
+        this.modReq=0;
+    }
+
+    //게시판에 대한 피드백 승인 메소드
+    public void feedbackAgree(){
+        this.modReq = 1;
+    }
+
+    //게시판에 대한 피드백 거절 메소드
+    public void feedbackDeny(){
+        this.modReq = 2;
     }
 }
