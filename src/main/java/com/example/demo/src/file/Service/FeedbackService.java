@@ -77,14 +77,7 @@ public class FeedbackService {
             feedbackRepository.save(feedbacks);
             return;
         }
-        //피드백을 등록 하기만 하면
-        //work 상태를 피드백진행중=3으로 바꿈
 
-        //한번 피드백을 했으면 다시 못바꿈)
-
-
-        //workResponse.setStatus(3);
-        workerServiceClient.setWorkStatus(workResponse.getId(), 3);
 
         /*// works.getEndDate()가 현재 시간보다 이후인지 확인합니다.
         //마감기한 전에 피드백 했을 때만 점수 받을 수 있음
@@ -154,7 +147,7 @@ public class FeedbackService {
     }
 
 
-    //???? 완료 되었을 때도 알람이 가게 할지??
+    //게시글 당 피드백 완료시 작업 점수
     public void AllTeamMemberAgreeCheck(Boards boards, WorkResponse workResponse) {
 
         // Board에 해당하는 모든 FeedbackStatuses 조회
@@ -207,7 +200,7 @@ public class FeedbackService {
     }
 
 
-    //???? 완료 되었을 때도 알람이 가게 할지??
+    //완료 작업 status 4
     public void AllWorkComplCheck(Boards boards, WorkResponse workResponse) {
         //피드백을 한 board의 work에 해당하는 모든 boardList들을 불러옴
         //work의 상태를 (4=완료)로 바꾸기 위해 work에 해당하는 boardList들의 feedbackYn이 모두 true인지 확인해야함

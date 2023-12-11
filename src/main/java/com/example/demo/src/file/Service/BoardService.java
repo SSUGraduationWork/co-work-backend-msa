@@ -70,7 +70,7 @@ public class BoardService {
 
         //feign client 사용
         WorkerResponse workerResponse=workerServiceClient.getWriteStatus(memberId,workId);
-        String projectPath =  "/src/main/resources/static/files";
+        String projectPath = "/src/main/resources/static/files";
 
         //work의 담당자만 게시판을 작성할 수 있음
         //각각의 담당자마다 게시판을 한번만 작성할 수 있음
@@ -82,7 +82,11 @@ public class BoardService {
         //feign client 사용
         workerServiceClient.setWriteStatusTrue(memberId,workId);
         // 게시판 등록
-
+        //피드백을 등록 하기만 하면
+        //work 상태를 피드백진행중=3으로 바꿈
+        //한번 피드백을 했으면 다시 못바꿈)
+        //workResponse.setStatus(3);
+        workerServiceClient.setWorkStatus(workId, 3);
 
         Boards boards = toEntity(request);
         boards.setUserId(memberId);
