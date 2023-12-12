@@ -40,4 +40,7 @@ module.exports = (app) => {
 
     //13. 팀의 모든 작업 반환
     app.get('/works-list/:teamId', work.findWorksByTeamId);
+
+    //14. guyujung workId로 worker 반환 API
+    app.get('/worker/:workId', work.findWorkerById);
 };

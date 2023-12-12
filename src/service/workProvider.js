@@ -64,6 +64,14 @@ const workProvider = {
         connection.release();
         return result;
     }
+    ,
+    //guyujung-추가
+    getWorker : async(workId) => {
+        const connection = await pool.getConnection(async(conn) => conn);
+        const worker = await workDao.selectWorkers(connection, workId);
+        connection.release();
+        return worker;
+    }
 }
 
 module.exports = workProvider;

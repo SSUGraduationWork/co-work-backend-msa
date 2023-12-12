@@ -202,5 +202,15 @@ const workDao = {
         const res = await connection.query(updateWorkStatusQuery, [status, workId]);
         return res
     },
+    //guyujung -추가
+    selectWorkers: async(connection, workId) => {
+        const selectWorkerQuery = `
+            SELECT work_id AS workId, user_id AS userId 
+            FROM Workers 
+            WHERE work_id = ?;
+        `
+        const [worker] = await connection.query(selectWorkerQuery, workId);
+        return worker;
+    },
 }
 module.exports = workDao;

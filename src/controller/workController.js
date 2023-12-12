@@ -238,3 +238,21 @@ exports.findWorksByTeamId = async(req, res) => {
         return res.status(500).send(null);
     }
 }
+
+/**
+ * guyujung 추가
+ * API No. 10
+ * API Name : workId로 work 반환 API
+ * [GET] /worker/:workId
+ */
+exports.findWorkerById = async (req, res) => {
+    try{
+        const {workId} = req.params;
+        const worker = await workProvider.getWorker(workId);
+        return res.status(200).send(worker);
+
+    } catch(err){
+        console.error(err);
+        return res.status(500).send(null);
+    }
+}
