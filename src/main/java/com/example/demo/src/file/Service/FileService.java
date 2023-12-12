@@ -26,7 +26,7 @@ public class FileService {
         try {
             for (Files file : files) {
                 String photoPath = file.getFilepath();
-               // String projectPath = System.getProperty("user.dir");
+                //String projectPath = System.getProperty("user.dir");
                 File photoFile = new File("/src/main/resources/static/" + photoPath);
 
 

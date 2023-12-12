@@ -65,6 +65,7 @@ public class BoardService {
     }
 
     //글 작성
+    @Transactional(rollbackFor = Exception.class) // Exception이 발생하면 롤백
     public multiWriteResponse multiWrite(BoardWriteRequest request, Long memberId, Long teamId, Long workId, MultipartFile[] files) throws Exception {
         //memberId와 workId로 worker조회하기. 글을 쓰는 사람이 work를 담당한 worker인지 확인하기 위함
 
@@ -195,7 +196,7 @@ public class BoardService {
     //게시글을 수정하고 싶을 경우에도 생각해야함.
     //다중 파일 글 재작성
     public multiWriteResponse multiReWrite(Long boardId,Long workId,BoardWriteRequest request, MultipartFile[] files) throws Exception{
-        String projectPath="/src/main/resources/static/files";
+        String projectPath= "/src/main/resources/static/files";
 
         Boards boards = boardRepository.findBoardById(boardId);
 
@@ -282,6 +283,7 @@ public class BoardService {
     }
 
     //wiriter은 게시판 작성자
+    @Transactional
     public void FeedbackStatusAndAlarm(Boards boards, Long writerId, Long workId, Long teamId) {
         ResponseTeamMember selectedMember = null;
         List<ResponseTeamMember> allMembers = teamServiceClient.findTeamById(boards.getTeamId());

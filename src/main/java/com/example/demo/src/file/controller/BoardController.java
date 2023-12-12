@@ -41,6 +41,7 @@ public class BoardController {
     }
 
     //파일 한번에 여러게 업로드 및 게시글 작성
+    @Transactional
     @PostMapping("/board/multiWrite/{memberId}/{teamId}/{workId}")
     public ResponseEntity<Response<multiWriteResponse>> multipleBoardWriteForm(@Valid BoardWriteRequest request,
                                                                                @PathVariable("memberId") Long memberId,

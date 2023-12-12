@@ -3,6 +3,7 @@ package com.example.demo.src.file.client;
 import com.example.demo.src.file.vo.BoardWorkDto;
 import com.example.demo.src.file.vo.WorkResponse;
 import com.example.demo.src.file.vo.WorkerResponse;
+import com.example.demo.src.file.vo.WorkersResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,4 +33,6 @@ public interface WorkerServiceClient {
     @PostMapping("/works/status/{workId}/{status}")
     void setWorkStatus(@PathVariable("workId") Long workId, @PathVariable("status") Integer status);
 
+    @GetMapping("/worker/{workId}")
+    List<WorkersResponse> findWorkerById(@PathVariable Long workId);
 }

@@ -13,9 +13,11 @@ import com.example.demo.src.file.domain.Feedbacks;
 import com.example.demo.src.file.dto.request.FeedbackRequest;
 import com.example.demo.src.file.dto.response.FeedbackResponse;
 
+import com.example.demo.src.file.dto.response.OneBoardIdResponse;
 import com.example.demo.src.file.vo.ResponseTeamMember;
 import com.example.demo.src.file.vo.TeamMemberResponse;
 import com.example.demo.src.file.vo.WorkResponse;
+import com.example.demo.src.file.vo.WorkersResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -202,19 +205,35 @@ public class FeedbackService {
 
     //완료 작업 status 4
     public void AllWorkComplCheck(Boards boards, WorkResponse workResponse) {
-        //피드백을 한 board의 work에 해당하는 모든 boardList들을 불러옴
-        //work의 상태를 (4=완료)로 바꾸기 위해 work에 해당하는 boardList들의 feedbackYn이 모두 true인지 확인해야함
-        List<Boards> boardList = boardRepository.findByWorksId(boards.getWorkId());
 
+        List<WorkersResponse> workersResponseList =workerServiceClient.findWorkerById(workResponse.getId());
+
+        List<Long> userIdList = workersResponseList.stream()
+                .map(WorkersResponse::getUserId)
+                .collect(Collectors.toList());
+
+        List<OneBoardIdResponse> boardList =boardRepository.findByUserIdInAndWorkId(userIdList,workResponse.getId());
+
+        for(OneBoardIdResponse one:boardList ){
+           System.out.println("boardId  "+one);
+        }
+
+        System.out.println("boardIdSize  "+boardList.size());
+        System.out.println("userIdSize  "+userIdList.size());
         boolean hasFeedbackYnTrue = true;
 
+
+
+
         // 모든 FeedbackStatuses의 feedback_yn이 true인지 확인
-        for (Boards board : boardList) {
-            if (board.isFeedbackYn() == false) { //한명이라도 feedback을 안했으면
+        for (OneBoardIdResponse board : boardList) {
+            System.out.println("실행 test");
+            //올린 게시물 하나라도 피드백 완료상태가 아니거나, 한 작업의 담당자수와 작성된 게시물 수가 다르면 완료(4)가 아님
+            if (board.isFeedbackYn() == false||(boardList.size()!=userIdList.size())) { //한명이라도 feedback을 안했으면
                 hasFeedbackYnTrue = false;
                 break;
             }
-
+            System.out.println("실행 test2");
             // 모든 BoardList들의 feedback_yn이 true라면 work의 status를 4로 변경
             //이미 status가 4하면 할 필요 없음
             if (hasFeedbackYnTrue && workResponse.getStatus() != 4) {
