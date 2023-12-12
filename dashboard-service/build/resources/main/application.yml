@@ -1,5 +1,4 @@
 server:
-  #port: 0
   port: 5004
 
 spring:
@@ -18,19 +17,10 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database-platform: org.hibernate.dialect.MySQLDialect
-  cloud:
-    client:
-      hostname: ${HOSTNAME}
-
-logging:
-  level:
-    com.example.userservice.client: DEBUG
 
 eureka:
   instance:
-    hostname: dashboard-service
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    #instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
   client:
     register-with-eureka: true
     fetch-registry: true
