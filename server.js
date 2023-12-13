@@ -16,7 +16,7 @@ const server = http.createServer(app);  //http server
 
 const io = require("socket.io")(server, {
     cors: {
-      origin: "http://localhost:8080",
+      origin: "https://co-work.co.kr",
       methods: ["GET", "POST"],
       allowedHeaders: ["extra-custrom-headeres"],
       credentials: true
