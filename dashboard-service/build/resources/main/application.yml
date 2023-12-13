@@ -9,9 +9,6 @@ spring:
     password: guest
   application:
     name: dashboard-service
-  cloud:
-    client:
-      hostname: ${HOSTNAME}
 
   jpa:
     show-sql: true
@@ -25,6 +22,7 @@ eureka:
   instance:
     #instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
     hostname: dashboard-service
+    prefer-ip-address: true
   client:
     register-with-eureka: true
     fetch-registry: true

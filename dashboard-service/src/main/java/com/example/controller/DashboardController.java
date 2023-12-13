@@ -180,9 +180,7 @@ public class DashboardController {
     @GetMapping("/dashboard/teamsByPro/{projectId}")
     public ResponseEntity<ResponseData> watchTeamsByPro(@PathVariable Long projectId) {
         List<Teams> teamsList = dashboardService.watchTeamsByPro(projectId);
-//        if (teamsList.isEmpty()) {
-//            return null;
-//        }
+
         String projectName = dashboardService.findProjectName(projectId);
 
         ResultForm resultForm = new ResultForm(teamsList, projectName, null);
