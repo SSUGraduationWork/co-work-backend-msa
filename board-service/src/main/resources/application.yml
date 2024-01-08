@@ -1,0 +1,42 @@
+server:
+  port: 5002
+
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  application:
+    name: board-service
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  #추가
+  cloud:
+    client:
+      hostname: ${HOSTNAME}
+
+logging:
+  level:
+    com.example.userservice.client: DEBUG
+
+eureka:
+  instance:
+    #아래 두줄 추가
+    hostname: board-service
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

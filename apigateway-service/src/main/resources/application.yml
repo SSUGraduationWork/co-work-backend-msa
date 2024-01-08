@@ -1,0 +1,32 @@
+server:
+  port: 8001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  application:
+    name: apigateway-service
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  main:
+    web-application-type: reactive
+  webflux:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: GET,POST,PUT,DELETE
+      allowed-headers: "*"
