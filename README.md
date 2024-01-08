@@ -18,6 +18,8 @@
 
 ## 아키텍처
 ### Service
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+
 `config-service`
 `discovery-service`
 `apigateway-service`
@@ -25,8 +27,12 @@
 `calendar-service`
 `user-service`
 `dashboard-service`
+
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+
 `work-service`
 `chat-service`
+
 
 <img width="700" alt="개발 환경 구성도" src="https://github.com/SSUGraduationWork/msa/assets/72440759/fff07cdc-29c5-4f14-978b-6415349717cf">
 
