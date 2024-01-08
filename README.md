@@ -31,7 +31,7 @@
 <img width="700" alt="개발 환경 구성도" src="https://github.com/SSUGraduationWork/msa/assets/72440759/fff07cdc-29c5-4f14-978b-6415349717cf">
 
 
-### 서비스 화면
+## 서비스 화면
 |대시보드|작업|파일|
 |----|----|----|
 |<img width="1470" alt="대시보드1" src="https://github.com/SSUGraduationWork/msa/assets/72440759/d52ecacd-b841-4b88-a6ee-bd054689b4c7">|<img width="1470" alt="작업" src="https://github.com/SSUGraduationWork/msa/assets/72440759/2cc3d3ae-4301-47d9-a708-57a97aab08f6">|<img width="1470" alt="파일" src="https://github.com/SSUGraduationWork/msa/assets/72440759/48405dc9-dda9-4223-9206-7fc253c73b58">|
