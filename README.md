@@ -41,3 +41,8 @@
 |<img width="1470" alt="캘린더" src="https://github.com/SSUGraduationWork/collaborativemanagement/assets/125520029/67706a37-d8db-4478-aab0-4c9e91b2ca97">|<img width="1470" alt="채팅" src="https://github.com/SSUGraduationWork/msa/assets/72440759/2ae0e8a3-aa9e-4d3c-8dc7-b47764c8f6c3">|<img width="1470" alt="기여도" src="https://github.com/SSUGraduationWork/msa/assets/72440759/7a88efc8-ca6d-442a-91af-0db8b4678ded">|
 
 
+## 개발팀 소개
+| 구유정 | 박서연 | 박윤혜 |
+| :---: | :---: | :---: |
+| <img src="https://avatars.githubusercontent.com/u/81794810?v=4" height=90 width=90></img> | <img src="https://avatars.githubusercontent.com/u/125520029?v=4" height=90 width=90></img> | <img src="https://avatars.githubusercontent.com/u/72440759?v=4" height=90 width=90></img> |
+| <a href="https://github.com/guyujung"><img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=FFFFFF&"/> | <a href="https://github.com/seoyeon0201"><img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=FFFFFF&"/> | <a href="https://github.com/yuunhye"><img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=FFFFFF&"/> | 
