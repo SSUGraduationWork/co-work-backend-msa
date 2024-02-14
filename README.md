@@ -46,6 +46,9 @@
 |----|----|----|
 |<img width="1470" alt="캘린더" src="https://github.com/SSUGraduationWork/collaborativemanagement/assets/125520029/67706a37-d8db-4478-aab0-4c9e91b2ca97">|<img width="1470" alt="채팅" src="https://github.com/SSUGraduationWork/msa/assets/72440759/2ae0e8a3-aa9e-4d3c-8dc7-b47764c8f6c3">|<img width="1470" alt="기여도" src="https://github.com/SSUGraduationWork/msa/assets/72440759/7a88efc8-ca6d-442a-91af-0db8b4678ded">|
 
+## 서비스 시연 영상 링크
+
+https://www.youtube.com/watch?si=UdfZwZ0xIkbpjR2g&v=o8WF0kYFea4&feature=youtu.be
 
 ## 개발팀 소개
 | 구유정 | 박서연 | 박윤혜 |
